@@ -24,13 +24,13 @@ class KategoriAdminController extends Controller
 
         Kategori::create($validated);
 
-        return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil ditambahkan.');
+        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil ditambahkan.');
     }
 
     public function destroy($id) {
         $kategori = Kategori::findOrFail($id);
         $kategori->delete();
-        return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil dihapus.');
+        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil dihapus.');
     }
 
     public function update(Request $request, $id) {
@@ -42,6 +42,6 @@ class KategoriAdminController extends Controller
         $kategori = Kategori::findOrFail($id);
         $kategori->update($validated);
 
-        return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil diperbarui.');
+        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil diperbarui.');
     }
 }

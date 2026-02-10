@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SarPras - Sistem Peminjaman Sekolah</title>
+    <title>SIMAS - Sistem Manajemen Aset Sekolah</title>
     @vite('resources/css/app.css')
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,7 +27,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
                         </svg>
                     </div>
-                    <span class="text-xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">SarPras</span>
+                    <span class="text-xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">SIMAS</span>
                 </div>
 
                 <!-- Navigation Links -->
@@ -167,7 +167,7 @@
                     Fitur Unggulan
                 </span>
                 <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mt-6">
-                    Kenapa Memilih <span class="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">SarPras?</span>
+                    Kenapa Memilih <span class="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">SIMAS?</span>
                 </h2>
                 <p class="text-xl text-gray-600 mt-4 max-w-2xl mx-auto">
                     Platform lengkap dengan berbagai fitur yang memudahkan proses peminjaman
@@ -321,34 +321,6 @@
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="py-20 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-5xl mx-auto">
-            <div class="bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 rounded-3xl p-12 lg:p-16 shadow-2xl shadow-blue-300 relative overflow-hidden">
-                <!-- Decorative circles -->
-                <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-                <div class="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2"></div>
-                
-                <div class="relative z-10 text-center text-white">
-                    <h2 class="text-4xl lg:text-5xl font-bold mb-6">
-                        Siap Memulai Peminjaman Digital?
-                    </h2>
-                    <p class="text-xl mb-8 text-blue-50 max-w-2xl mx-auto">
-                        Bergabunglah dengan ratusan pengguna lain yang sudah merasakan kemudahan sistem peminjaman modern
-                    </p>
-                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                        <a href="/register" class="px-8 py-4 bg-white text-blue-600 rounded-xl font-bold text-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                            Daftar Gratis
-                        </a>
-                        <a href="#kontak" class="px-8 py-4 bg-blue-700 text-white rounded-xl font-bold text-lg border-2 border-white/30 hover:bg-blue-800 transition-all duration-300">
-                            Hubungi Kami
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Footer -->
     <footer id="kontak" class="bg-gray-900 text-gray-300 py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-7xl mx-auto">
@@ -361,7 +333,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
                             </svg>
                         </div>
-                        <span class="text-xl font-bold text-white">SarPras</span>
+                        <span class="text-xl font-bold text-white">SIMAS</span>
                     </div>
                     <p class="text-gray-400 mb-4">
                         Platform digital untuk memudahkan peminjaman sarana prasarana sekolah secara efisien dan transparan.
@@ -387,7 +359,7 @@
                             <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                             </svg>
-                            <span>info@sarpras.sch.id</span>
+                            <span>info@SIMAS.sch.id</span>
                         </li>
                         <li class="flex items-center space-x-2">
                             <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -400,7 +372,7 @@
             </div>
 
             <div class="border-t border-gray-800 pt-8 text-center text-gray-500">
-                <p>&copy; 2024 SarPras. Semua hak cipta dilindungi.</p>
+                <p>&copy; 2024 SIMAS. Semua hak cipta dilindungi.</p>
             </div>
         </div>
     </footer>

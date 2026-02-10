@@ -5,18 +5,31 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash; // Wajib import ini
+use Illuminate\Support\Facades\Hash;
 
 class PenggunaAdminController extends Controller
 {
     public function index() {
-        // Mengambil data user terbaru dengan pagination
-        $users = User::latest()->paginate(10);
-        return view('admin.pengguna.index', compact('users'));
+        // Mengambil data user dengan role petugas dan siswa secara terpisah
+        $petugas = User::where('role', 'petugas')->latest()->paginate(10, ['*'], 'petugas_page');
+        $siswa = User::where('role', 'siswa')->latest()->paginate(10, ['*'], 'siswa_page');
+        
+        // Hitung total untuk stats
+        $totalPengguna = User::count();
+        $totalPetugas = User::where('role', 'petugas')->count();
+        $totalSiswa = User::where('role', 'siswa')->count();
+        
+        return view('admin.pengguna.index', compact(
+            'petugas', 
+            'siswa', 
+            'totalPengguna', 
+            'totalPetugas', 
+            'totalSiswa'
+        ));
     }
 
     public function store(Request $request) {
-        // 1. Validasi Dasar (Wajib untuk semua)
+        // 1. Validasi Dasar
         $rules = [
             'name' => 'required|string|max:255',
             'role' => 'required|in:petugas,siswa',
@@ -25,26 +38,27 @@ class PenggunaAdminController extends Controller
 
         // 2. Validasi Khusus Berdasarkan Role
         if ($request->role === 'siswa') {
-            // Jika Siswa: NISN & Kelas Wajib, Email tidak perlu diinput user
             $rules['nisn'] = 'required|string|unique:users,nisn';
             $rules['kelas'] = 'required|string';
         } else {
-            // Jika Admin/Petugas: Email Wajib
             $rules['email'] = 'required|email|unique:users,email';
         }
 
         $validated = $request->validate($rules);
 
         // 3. Generate Email Dummy untuk Siswa
-        // Database Laravel biasanya mewajibkan kolom email.
-        // Kita buat email palsu: [nisn]@siswa.sekolah agar tidak error.
         if ($request->role === 'siswa') {
             $validated['email'] = $request->nisn . '@siswa.sekolah';
+            $validated['nisn'] = $request->nisn;
+            $validated['kelas'] = $request->kelas;
         } else {
             $validated['email'] = $request->email;
+            $validated['nisn'] = null;
+            $validated['kelas'] = null;
         }
 
-        // 4. Hash Password (Keamanan)
+        // 4. Set default status dan hash password
+        $validated['status'] = 'aktif';
         $validated['password'] = Hash::make($request->password);
 
         // 5. Simpan
@@ -60,20 +74,23 @@ class PenggunaAdminController extends Controller
     }
     
     public function update(Request $request, $id) {
-        $user = \App\Models\User::findOrFail($id);
+        $user = User::findOrFail($id);
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'nisn' => 'nullable|string|unique:users,nisn,' . $user->id,
             'kelas' => 'nullable|string|max:255',
-            'role' => 'required|in:petugas,siswa'
+            'role' => 'required|in:petugas,siswa',
         ]);
 
         $user->update($validated);
 
         return redirect()->route('admin.pengguna.index')->with('success', 'Pengguna berhasil diperbarui.');
-}
+    }
 
+    public function edit($id) {
+        $user = User::findOrFail($id);
+        return view('admin.pengguna.edit', compact('user'));
+    }
 }
-    

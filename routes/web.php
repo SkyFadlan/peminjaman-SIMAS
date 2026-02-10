@@ -43,15 +43,23 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dashboard', [DashboardAdminController::class, 'index'])->name('admin.dashboard');
 
     Route::get('/barang', [BarangAdminController::class, 'index'])->name('admin.barang');
+    Route::resource('/barang', BarangAdminController::class)->except(['show','edit','update']);
+    Route::post('/barang', [BarangAdminController::class,'store'])->name('admin.barang.store');
+        Route::post('/barang/{id}', [BarangAdminController::class,'update'])->name('admin.barang.update');
+        Route::delete('/barang/{id}', [BarangAdminController::class,'destroy'])->name('admin.barang.destroy');
 
-    Route::get('/kategori', [KategoriAdminController::class, 'index'])->name('admin.kategori');
+    Route::get('/kategori', [KategoriAdminController::class, 'index'])->name('kategori.index');
     Route::resource('/kategori', KategoriAdminController::class)->except(['show','edit','update']);
     Route::post('/kategori', [KategoriAdminController::class,'store'])->name('admin.kategori.store');
+        Route::post('/kategori/{id}', [KategoriAdminController::class,'update'])->name('admin.kategori.update');
+        Route::delete('/kategori/{id}', [KategoriAdminController::class,'destroy'])->name('admin.kategori.destroy');    
 
 
     Route::get('/pengguna', [PenggunaAdminController::class, 'index'])->name('admin.pengguna');
     Route::resource('/pengguna', PenggunaAdminController::class)->except(['show','edit','update']);
     Route::post('/pengguna', [PenggunaAdminController::class,'store'])->name('admin.pengguna.store');
+        Route::post('/pengguna/{id}', [PenggunaAdminController::class,'update'])->name('admin.pengguna.update');
+        Route::delete('/pengguna/{id}', [PenggunaAdminController::class,'destroy'])->name('admin.pengguna.destroy');
 
     Route::get('/riwayat', [RiwayatAdminController::class, 'index'])->name('admin.riwayat');
     
