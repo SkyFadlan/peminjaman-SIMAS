@@ -22,4 +22,13 @@ class Barang extends Model
     {
         return $this->belongsTo(Kategori::class, 'kategori_id');
     }
+
+    // Accessor untuk gambar URL
+    public function getGambarUrlAttribute()
+    {
+        return $this->barang ? Storage::url($this->barang) : null;
+    }
+    
+    // Append accessor ke JSON
+    protected $appends = ['gambar_url'];
 }

@@ -75,6 +75,8 @@ Route::prefix('petugas')->middleware(['auth', 'role:petugas'])->group(function (
 // Peminjam/Siswa routes
 Route::prefix('peminjam')->middleware(['auth', 'role:siswa'])->group(function () {
     Route::get('/beranda', [BerandaPeminjamController::class, 'index'])->name('peminjam.beranda');
+    Route::get('/barang/{id}', [BerandaPeminjamController::class, 'show'])->name('peminjam.barang.show');
+    
     Route::get('/aktivitas-saya', [AktivitasPeminjamController::class, 'index'])->name('peminjam.aktivitasSaya');
     // Tambahkan route peminjam lainnya di sini
 });
