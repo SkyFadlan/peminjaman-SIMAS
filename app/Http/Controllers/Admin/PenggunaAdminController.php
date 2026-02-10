@@ -64,13 +64,13 @@ class PenggunaAdminController extends Controller
         // 5. Simpan
         User::create($validated);
 
-        return redirect()->route('admin.pengguna.index')->with('success', 'Pengguna berhasil ditambahkan.');
+        return redirect()->route('pengguna.index')->with('success', 'Pengguna berhasil ditambahkan.');
     }
 
     public function destroy($id) {
         $user = User::findOrFail($id);
         $user->delete();
-        return redirect()->route('admin.pengguna.index')->with('success', 'Pengguna berhasil dihapus.');
+        return redirect()->route('pengguna.index')->with('success', 'Pengguna berhasil dihapus.');
     }
     
     public function update(Request $request, $id) {
@@ -86,7 +86,7 @@ class PenggunaAdminController extends Controller
 
         $user->update($validated);
 
-        return redirect()->route('admin.pengguna.index')->with('success', 'Pengguna berhasil diperbarui.');
+        return redirect()->route('pengguna.index')->with('success', 'Pengguna berhasil diperbarui.');
     }
 
     public function edit($id) {

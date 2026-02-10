@@ -170,15 +170,6 @@
                         <h3 class="text-gray-600 text-sm font-medium mb-1">Siswa</h3>
                         <p class="text-3xl font-bold text-gray-900">{{ $totalSiswa }}</p>
                     </div>
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Tabs & Table -->

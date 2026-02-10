@@ -118,17 +118,6 @@
                     </div>
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                         <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center">
-                                <svg class="w-6 h-6 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-                                </svg>
-                            </div>
-                        </div>
-                        <h3 class="text-gray-600 text-sm font-medium mb-1">Total Item</h3>
-                        <p class="text-3xl font-bold text-gray-900">{{ $totalItems ?? 342 }}</p>
-                    </div>
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                        <div class="flex items-center justify-between mb-4">
                             <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
                                 <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
@@ -136,7 +125,7 @@
                             </div>
                         </div>
                         <h3 class="text-gray-600 text-sm font-medium mb-1">Paling Banyak</h3>
-                        <p class="text-xl font-bold text-gray-900">{{ $mostPopularCategory ?? 'Elektronik' }}</p>
+                        <p class="text-xl font-bold text-gray-900">{{ $mostPopularCategory ?? 'Belum ada data' }}</p>
                     </div>
                 </div>
 
@@ -175,7 +164,9 @@
                                     <p class="text-sm text-gray-600 mb-4">{{ Str::limit($kategori->deskripsi, 40) ?? 'Tidak ada deskripsi' }}</p>
                                     
                                     <div class="flex items-center justify-between">
-                                        <span class="text-2xl font-bold {{ $style['text'] }}">#{{ $kategori->id }}</span>
+                                        <span class="text-2xl font-bold {{ $style['text'] }}">
+                                            {{ $kategori->barang_count ?? 0 }} item
+                                        </span>
                                         
                                         <div class="flex items-center space-x-1">
                                             <button onclick="editCategory({{ $kategori->id }}, '{{ addslashes($kategori->nama_kategori) }}', '{{ addslashes($kategori->deskripsi) }}')" 
