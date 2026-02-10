@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Kategori - SIMAS</title>
+    @vite('resources/css/app.css')
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-slate-50">
+    
+    <div class="flex min-h-screen">
+        <!-- Sidebar Component -->
+        @include('components.sidebar_admin')
+
+        <!-- Main Content -->
+        <div class="flex-1 lg:ml-64">
+            <!-- Top Navbar -->
+            <nav class="bg-white border-b border-gray-200 sticky top-0 z-40">
+                <div class="px-4 sm:px-6 lg:px-8">
+                    <div class="flex items-center justify-between h-16">
+                        <!-- Mobile Menu Button -->
+                        <button id="mobile-menu-button" class="lg:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                            </svg>
+                        </button>
+
+                        <!-- Page Title -->
+                        <div class="flex-1">
+                            <h1 class="text-2xl font-bold text-gray-900">Data Kategori</h1>
+                            <p class="text-sm text-gray-500 mt-0.5">Kelola kategori aset sarana prasarana</p>
+                        </div>
+
+                        <!-- Right Side Actions -->
+                        <div class="flex items-center space-x-3">
+                            <button class="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </button>
+                            <button class="relative p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                                </svg>
+                                <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </button>
+                            <div class="flex items-center space-x-3 pl-3 border-l border-gray-200">
+                                <div class="hidden sm:block text-right">
+                                    <p class="text-sm font-semibold text-gray-900">Admin User</p>
+                                    <p class="text-xs text-gray-500">Administrator</p>
+                                </div>
+                                <button class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center text-white font-semibold">
+                                    A
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="p-4 sm:p-6 lg:px-8">
+                <!-- Action Bar -->
+                <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div class="flex items-center space-x-3">
+                        <button onclick="openModal('addCategoryModal')" class="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-blue-300 transition-all flex items-center space-x-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                            </svg>
+                            <span>Tambah Kategori</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <h3 class="text-gray-600 text-sm font-medium mb-1">Total Kategori</h3>
+                        <p class="text-3xl font-bold text-gray-900">{{ $kategoris->count() }}</p>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <h3 class="text-gray-600 text-sm font-medium mb-1">Total Item</h3>
+                        <p class="text-3xl font-bold text-gray-900">{{ $totalItems ?? 342 }}</p>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <h3 class="text-gray-600 text-sm font-medium mb-1">Paling Banyak</h3>
+                        <p class="text-xl font-bold text-gray-900">{{ $mostPopularCategory ?? 'Elektronik' }}</p>
+                    </div>
+                </div>
+
+                <!-- Category Cards Grid -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+                    <div class="p-6 border-b border-gray-100">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-lg font-bold text-gray-900">Daftar Kategori</h2>
+                        </div>
+                    </div>
+
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                            
+                            @php
+                                // Array warna untuk styling dinamis agar tetap cantik
+                                $colors = [
+                                    ['bg' => 'bg-blue-50', 'border' => 'border-blue-100', 'icon_bg' => 'from-blue-500 to-cyan-400', 'text' => 'text-blue-600'],
+                                    ['bg' => 'bg-green-50', 'border' => 'border-green-100', 'icon_bg' => 'from-green-500 to-teal-400', 'text' => 'text-green-600'],
+                                    ['bg' => 'bg-purple-50', 'border' => 'border-purple-100', 'icon_bg' => 'from-purple-500 to-pink-400', 'text' => 'text-purple-600'],
+                                    ['bg' => 'bg-orange-50', 'border' => 'border-orange-100', 'icon_bg' => 'from-orange-500 to-amber-400', 'text' => 'text-orange-600'],
+                                    ['bg' => 'bg-rose-50', 'border' => 'border-rose-100', 'icon_bg' => 'from-rose-500 to-red-400', 'text' => 'text-rose-600'],
+                                    ['bg' => 'bg-indigo-50', 'border' => 'border-indigo-100', 'icon_bg' => 'from-indigo-500 to-blue-400', 'text' => 'text-indigo-600'],
+                                    ['bg' => 'bg-yellow-50', 'border' => 'border-yellow-100', 'icon_bg' => 'from-yellow-500 to-orange-400', 'text' => 'text-yellow-600'],
+                                ];
+                            @endphp
+
+                            @forelse($kategoris as $index => $kategori)
+                                @php
+                                    // Pilih warna berdasarkan index (looping jika habis)
+                                    $style = $colors[$index % count($colors)];
+                                @endphp
+
+                                <div class="group {{ $style['bg'] }} rounded-xl p-6 border {{ $style['border'] }} hover:shadow-lg hover:-translate-y-1 transition-all">
+                                    <div class="flex items-start justify-between mb-4">
+                                        <div class="w-12 h-12 bg-gradient-to-br {{ $style['icon_bg'] }} rounded-lg flex items-center justify-center">
+                                            <span class="text-white text-xl font-bold">{{ substr($kategori->nama_kategori, 0, 1) }}</span>
+                                        </div>
+                                    </div>
+                                    <h3 class="text-lg font-bold text-gray-900 mb-2">{{ $kategori->nama_kategori }}</h3>
+                                    <p class="text-sm text-gray-600 mb-4">{{ Str::limit($kategori->deskripsi, 40) ?? 'Tidak ada deskripsi' }}</p>
+                                    
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-2xl font-bold {{ $style['text'] }}">#{{ $kategori->id }}</span>
+                                        
+                                        <div class="flex items-center space-x-1">
+                                            <button onclick="editCategory({{ $kategori->id }}, '{{ addslashes($kategori->nama_kategori) }}', '{{ addslashes($kategori->deskripsi) }}')" 
+                                                class="p-2 bg-white rounded-lg hover:bg-gray-100 transition-colors">
+                                                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                                </svg>
+                                            </button>
+
+                                            <form action="{{ route('admin.kategori.destroy', $kategori->id) }}" method="POST" onsubmit="return confirm('Yakin hapus kategori ini?');" class="inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="p-2 bg-white rounded-lg hover:bg-red-50 transition-colors">
+                                                    <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                                    </svg>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="col-span-full text-center py-10">
+                                    <p class="text-gray-500">Belum ada kategori yang ditambahkan.</p>
+                                </div>
+                            @endforelse
+
+                            <!-- Tombol Tambah Kategori -->
+                            <div onclick="openModal('addCategoryModal')" class="group bg-gradient-to-br from-gray-50 to-slate-50 rounded-xl p-6 border-2 border-dashed border-gray-300 hover:border-blue-400 hover:shadow-lg transition-all cursor-pointer flex items-center justify-center min-h-[200px]">
+                                <div class="text-center">
+                                    <div class="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:bg-blue-100 transition-colors">
+                                        <svg class="w-6 h-6 text-gray-400 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                        </svg>
+                                    </div>
+                                    <p class="text-sm font-semibold text-gray-600 group-hover:text-blue-600 transition-colors">Tambah Kategori</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Add Category Modal -->
+    <div id="addCategoryModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full">
+            <div class="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between rounded-t-2xl">
+                <h3 class="text-xl font-bold text-gray-900">Tambah Kategori Baru</h3>
+                <button type="button" onclick="closeModal('addCategoryModal')" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                    <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="p-6">
+                    <form id="addCategoryForm" action="{{ route('admin.kategori.store') }}" method="POST" class="space-y-4">
+                        @csrf
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Kategori <span class="text-red-500">*</span></label>
+                            <input type="text" name="nama_kategori" required class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Contoh: Elektronik">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Deskripsi</label>
+                            <textarea name="deskripsi" rows="3" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Deskripsi kategori (opsional)"></textarea>
+                        </div>
+                        <div class="flex justify-end space-x-3 pt-4">
+                            <button type="button" onclick="closeModal('addCategoryModal')" class="px-5 py-2.5 border border-gray-200 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all">
+                                Batal
+                            </button>
+                            <button type="submit" class="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-blue-300 transition-all">
+                                Simpan Kategori
+                            </button>
+                        </div>
+                    </form>
+    </div>
+
+    <!-- Edit Category Modal -->
+    <div id="editCategoryModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full">
+            <div class="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between rounded-t-2xl">
+                <h3 class="text-xl font-bold text-gray-900">Edit Kategori</h3>
+                <button type="button" onclick="closeModal('editCategoryModal')" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                    <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="p-6">
+                <form id="editCategoryForm" method="POST" class="space-y-4">
+                    @csrf
+                    @method('PUT')
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Kategori *</label>
+                        <input type="text" id="editNama" name="nama_kategori" required class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Deskripsi</label>
+                        <textarea id="editDeskripsi" name="deskripsi" rows="3" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                    </div>
+                    <div class="flex justify-end space-x-3 pt-4">
+                        <button type="button" onclick="closeModal('editCategoryModal')" class="px-5 py-2.5 border border-gray-200 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all">
+                            Batal
+                        </button>
+                        <button type="submit" class="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-blue-300 transition-all">
+                            Update Kategori
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Notification (Optional) -->
+    <div id="successNotification" class="fixed top-4 right-4 z-50 hidden">
+        <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg shadow-lg">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm font-medium text-green-800" id="successMessage"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal Functions
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('hidden');
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('hidden');
+            }
+            // Reset form jika modal add category
+            if (modalId === 'addCategoryModal') {
+                const form = document.getElementById('addCategoryForm');
+                if (form) form.reset();
+            }
+        }
+
+        // Handle Edit Kategori
+        function editCategory(id, nama, deskripsi) {
+            // Set values ke form
+            document.getElementById('editNama').value = nama;
+            document.getElementById('editDeskripsi').value = deskripsi;
+            
+            // Set action URL form update
+            let form = document.getElementById('editCategoryForm');
+            form.action = "{{ url('admin/kategori') }}/" + id;
+            
+            openModal('editCategoryModal');
+        }
+
+        // Close modal dengan ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal('addCategoryModal');
+                closeModal('editCategoryModal');
+            }
+        });
+
+        // Close modal clicking outside
+        window.addEventListener('click', function(e) {
+            if (e.target.id === 'addCategoryModal') {
+                closeModal('addCategoryModal');
+            }
+            if (e.target.id === 'editCategoryModal') {
+                closeModal('editCategoryModal');
+            }
+        });
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const sidebar = document.querySelector('aside');
+        if (mobileMenuButton && sidebar) {
+            mobileMenuButton.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+        }
+    </script>
+</body>
+</html>
