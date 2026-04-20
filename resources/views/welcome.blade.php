@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIMAS - Sistem Manajemen Aset Sekolah</title>
-    @vite('resources/css/app.css')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -61,37 +61,12 @@
                     <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
                         Kelola Peminjaman
                         <span class="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent"> Sarana Prasarana </span>
-                        dengan Mudah
+                        dengan SIMAS
                     </h1>
                     
                     <p class="text-xl text-gray-600 leading-relaxed">
                         Platform digital yang memudahkan siswa dan guru dalam meminjam dan mengelola sarana prasarana sekolah secara efisien dan transparan.
                     </p>
-
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="/register" class="px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-xl font-bold text-lg hover:shadow-xl hover:shadow-blue-300 transition-all duration-300 transform hover:-translate-y-1 text-center">
-                            Mulai Sekarang
-                        </a>
-                        <a href="#fitur" class="px-8 py-4 bg-white text-blue-600 rounded-xl font-bold text-lg border-2 border-blue-200 hover:border-blue-400 hover:shadow-lg transition-all duration-300 text-center">
-                            Pelajari Lebih Lanjut
-                        </a>
-                    </div>
-
-                    <!-- Stats -->
-                    <div class="grid grid-cols-3 gap-6 pt-8 border-t border-blue-100">
-                        <div>
-                            <div class="text-3xl font-bold text-blue-600">500+</div>
-                            <div class="text-sm text-gray-600 mt-1">Pengguna Aktif</div>
-                        </div>
-                        <div>
-                            <div class="text-3xl font-bold text-cyan-600">1000+</div>
-                            <div class="text-sm text-gray-600 mt-1">Item Tersedia</div>
-                        </div>
-                        <div>
-                            <div class="text-3xl font-bold text-blue-600">98%</div>
-                            <div class="text-sm text-gray-600 mt-1">Kepuasan</div>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Right Illustration -->

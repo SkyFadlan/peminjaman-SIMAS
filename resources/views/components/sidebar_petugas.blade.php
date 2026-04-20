@@ -1,21 +1,19 @@
 <!-- Sidebar Component untuk Petugas -->
-<aside class="fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col">
+<aside class="fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-slate-950 border-r border-gray-200 dark:border-slate-800 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col">
     <!-- Logo Section -->
-    <div class="h-16 flex-shrink-0 flex items-center justify-between px-6 border-b border-gray-200">
-        <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 bg-gradient-to-br from-indigo-600 to-violet-500 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200">
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-                </svg>
-            </div>
-            <span class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-violet-500 bg-clip-text text-transparent">SarPras</span>
-        </div>
-        <!-- Close button for mobile -->
-        <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+    <div class="h-16 flex-shrink-0 flex items-center justify-between px-6 border-b border-gray-200 dark:border-slate-800">
+    <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 bg-gradient-to-br from-indigo-600 to-violet-500 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
             </svg>
-        </button>
+        </div>
+        
+        <div class="flex flex-col leading-tight">
+            <span class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-violet-500 bg-clip-text text-transparent">SIMAS</span>
+            <p class="text-[10px] md:text-xs text-gray-500 dark:text-slate-400 font-medium">Sistem Manajemen Sekolah</p>
+        </div>
+    </div>
     </div>
 
     <!-- Navigation Menu - Scrollable Area -->
@@ -24,7 +22,7 @@
             <div class="space-y-1">
                 <!-- Dashboard -->
                 <a href="{{ url('petugas/dashboard') }}" 
-                   class="flex items-center space-x-3 px-4 py-3 rounded-xl {{ Request::is('petugas/dashboard*') ? 'bg-gradient-to-r from-indigo-600 to-violet-500 text-white shadow-lg shadow-indigo-200' : 'text-gray-700 hover:bg-indigo-50 hover:text-indigo-600' }} transition-all group">
+                   class="flex items-center space-x-3 px-4 py-3 rounded-xl {{ Request::is('petugas/dashboard*') ? 'bg-gradient-to-r from-indigo-600 to-violet-500 text-white shadow-lg shadow-indigo-200' : 'text-gray-700 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-slate-800 hover:text-indigo-600 dark:hover:text-indigo-300' }} transition-all group">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                     </svg>
@@ -37,26 +35,23 @@
                     <div class="space-y-1">
                         <!-- Permintaan Peminjaman -->
                         <a href="{{ url('petugas/permintaan') }}" 
-                           class="flex items-center justify-between px-4 py-3 rounded-xl {{ Request::is('petugas/permintaan*') ? 'bg-gradient-to-r from-indigo-600 to-violet-500 text-white shadow-lg shadow-indigo-200' : 'text-gray-700 hover:bg-indigo-50 hover:text-indigo-600' }} transition-all group">
+                           class="flex items-center justify-between px-4 py-3 rounded-xl {{ Request::is('petugas/permintaan*') ? 'bg-gradient-to-r from-indigo-600 to-violet-500 text-white shadow-lg shadow-indigo-200' : 'text-gray-700 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-slate-800 hover:text-indigo-600 dark:hover:text-indigo-300' }} transition-all group">
                             <div class="flex items-center space-x-3">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                                 </svg>
                                 <span class="font-medium">Permintaan</span>
                             </div>
-                            <span class="px-2 py-0.5 {{ Request::is('petugas/permintaan*') ? 'bg-white/20 text-white' : 'bg-indigo-100 text-indigo-700' }} rounded-full text-xs font-semibold">24</span>
-                        </a>
 
                         <!-- Pengembalian -->
                         <a href="{{ url('petugas/pengembalian') }}" 
-                           class="flex items-center justify-between px-4 py-3 rounded-xl {{ Request::is('petugas/pengembalian*') ? 'bg-gradient-to-r from-indigo-600 to-violet-500 text-white shadow-lg shadow-indigo-200' : 'text-gray-700 hover:bg-indigo-50 hover:text-indigo-600' }} transition-all group">
+                           class="flex items-center justify-between px-4 py-3 rounded-xl {{ Request::is('petugas/pengembalian*') ? 'bg-gradient-to-r from-indigo-600 to-violet-500 text-white shadow-lg shadow-indigo-200' : 'text-gray-700 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-slate-800 hover:text-indigo-600 dark:hover:text-indigo-300' }} transition-all group">
                             <div class="flex items-center space-x-3">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                                 <span class="font-medium">Pengembalian</span>
                             </div>
-                            <span class="px-2 py-0.5 {{ Request::is('petugas/pengembalian*') ? 'bg-white/20 text-white' : 'bg-orange-100 text-orange-700' }} rounded-full text-xs font-semibold">8</span>
                         </a>
                     </div>
                 </div>
@@ -67,31 +62,12 @@
                     <div class="space-y-1">
                         <!-- Laporan -->
                         <a href="{{ url('petugas/laporan') }}" 
-                           class="flex items-center space-x-3 px-4 py-3 rounded-xl {{ Request::is('petugas/laporan*') ? 'bg-gradient-to-r from-indigo-600 to-violet-500 text-white shadow-lg shadow-indigo-200' : 'text-gray-700 hover:bg-indigo-50 hover:text-indigo-600' }} transition-all group">
+                           class="flex items-center space-x-3 px-4 py-3 rounded-xl {{ Request::is('petugas/laporan*') ? 'bg-gradient-to-r from-indigo-600 to-violet-500 text-white shadow-lg shadow-indigo-200' : 'text-gray-700 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-slate-800 hover:text-indigo-600 dark:hover:text-indigo-300' }} transition-all group">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                             </svg>
                             <span class="font-medium">Laporan</span>
                         </a>
-                    </div>
-                </div>
-
-                <!-- Quick Actions Section -->
-                <div class="pt-6">
-                    <h3 class="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Quick Actions</h3>
-                    <div class="space-y-2">
-                        <button class="w-full px-4 py-3 bg-gradient-to-r from-indigo-600 to-violet-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-indigo-300 transition-all flex items-center justify-center space-x-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path>
-                            </svg>
-                            <span>Scan QR Code</span>
-                        </button>
-                        <button class="w-full px-4 py-3 bg-indigo-50 text-indigo-700 rounded-xl font-semibold hover:bg-indigo-100 transition-all flex items-center justify-center space-x-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
-                            </svg>
-                            <span>Cetak Laporan</span>
-                        </button>
                     </div>
                 </div>
             </div>
@@ -101,7 +77,7 @@
     <!-- Bottom Profile Section dengan Logout -->
     <div class="border-t border-gray-200 p-4 flex-shrink-0 space-y-3">
         <!-- Profil User -->
-        <div class="flex items-center justify-between p-3 rounded-xl hover:bg-indigo-50 transition-colors cursor-pointer group">
+        <div class="flex items-center justify-between p-3 rounded-xl hover:bg-indigo-50 dark:hover:bg-slate-800 transition-colors cursor-pointer group">
             <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-600 to-violet-500 flex items-center justify-center text-white font-semibold shadow-lg">
                     {{ substr(auth()->user()->name, 0, 1) }}
@@ -119,7 +95,7 @@
                 </button>
                 
                 <!-- Dropdown Menu -->
-                <div id="petugas-dropdown" class="hidden absolute bottom-full right-0 mb-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50">
+                <div id="petugas-dropdown" class="hidden absolute bottom-full right-0 mb-2 w-48 bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-gray-100 dark:border-slate-800 py-2 z-50">
                     <a href="{{ route('profile.edit') }}" class="flex items-center space-x-3 px-4 py-2.5 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
@@ -139,6 +115,14 @@
                 </div>
             </div>
         </div>
+
+        <!-- Tombol Dark Mode -->
+        <button type="button" onclick="toggleDarkMode()" data-theme-toggle class="theme-toggle-button flex items-center justify-center gap-2 w-full px-4 py-3 bg-slate-900/5 dark:bg-slate-700/70 text-slate-700 dark:text-slate-100 rounded-xl hover:bg-slate-900/10 dark:hover:bg-slate-600 transition-all">
+            <span class="inline-flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M17.293 13.293A8 8 0 116.707 2.707a7 7 0 1010.586 10.586z" clip-rule="evenodd"/></svg>
+                <span>Dark Mode</span>
+            </span>
+        </button>
 
         <!-- Tombol Logout Utama -->
         <form method="POST" action="{{ route('logout') }}" class="w-full">

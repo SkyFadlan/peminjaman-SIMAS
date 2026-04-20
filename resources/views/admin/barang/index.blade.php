@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Barang - SIMAS</title>
-    @vite('resources/css/app.css')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -165,6 +165,8 @@
                                     <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Nama Aset</th>
                                     <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Kategori</th>
                                     <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Jumlah</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Dipinjam</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Tersedia</th>
                                     <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Aksi</th>
                                 </tr>
                             </thead>
@@ -203,6 +205,12 @@
                                         </span>
                                     </td>
                                     <td class="px-6 py-4">
+                                        <span class="text-sm font-semibold text-gray-900">{{ $barang->jumlah + $barang->peminjamans->sum('jumlah') }} unit</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="text-sm font-semibold text-gray-900">{{ $barang->peminjamans->sum('jumlah') }} unit</span>
+                                    </td>
+                                    <td class="px-6 py-4">
                                         <span class="text-sm font-semibold text-gray-900">{{ $barang->jumlah }} unit</span>
                                     </td>
                                     <td class="px-6 py-4">
@@ -232,7 +240,7 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="5" class="px-6 py-8 text-center text-gray-500">
+                                    <td colspan="7" class="px-6 py-8 text-center text-gray-500">
                                         Belum ada data barang
                                     </td>
                                 </tr>
@@ -240,6 +248,62 @@
                             </tbody>
                         </table>
                     </div>
+                </div>
+                <!-- PAGINATION -->
+                    @if(isset($barangs) && $barangs->hasPages())
+                    <div class="px-6 py-4 bg-gray-50 border-t border-gray-100">
+                        <div class="flex flex-col items-center space-y-2">
+                            <!-- Informasi halaman -->
+                            <div class="text-sm text-gray-700">
+                                Menampilkan {{ $barangs->firstItem() }} - {{ $barangs->lastItem() }} 
+                                dari {{ $barangs->total() }} data
+                            </div>
+                            
+                            <!-- Tombol navigasi -->
+                            <div class="flex items-center space-x-1">
+                                {{-- Previous Page Link --}}
+                                @if($barangs->onFirstPage())
+                                    <span class="px-3 py-1 text-gray-400 bg-gray-100 rounded cursor-not-allowed">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                        </svg>
+                                    </span>
+                                @else
+                                    <a href="{{ $barangs->previousPageUrl() }}" class="px-3 py-1 text-blue-600 bg-blue-50 rounded hover:bg-blue-100">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                        </svg>
+                                    </a>
+                                @endif
+
+                                {{-- Pagination Elements --}}
+                                @foreach($barangs->getUrlRange(1, $barangs->lastPage()) as $page => $url)
+                                    @if($page == $barangs->currentPage())
+                                        <span class="px-3 py-1 text-white bg-blue-600 rounded">{{ $page }}</span>
+                                    @else
+                                        <a href="{{ $url }}" class="px-3 py-1 text-gray-600 bg-gray-100 rounded hover:bg-gray-200">{{ $page }}</a>
+                                    @endif
+                                @endforeach
+
+                                {{-- Next Page Link --}}
+                                @if($barangs->hasMorePages())
+                                    <a href="{{ $barangs->nextPageUrl() }}" class="px-3 py-1 text-blue-600 bg-blue-50 rounded hover:bg-blue-100">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                        </svg>
+                                    </a>
+                                @else
+                                    <span class="px-3 py-1 text-gray-400 bg-gray-100 rounded cursor-not-allowed">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                        </svg>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+
                 </div>
             </main>
         </div>
@@ -392,7 +456,7 @@
                         <h4 class="text-lg font-bold text-gray-900 mb-2">${barangData.nama_barang}</h4>
                         <p class="text-sm text-gray-600 mb-4">${barangData.deskripsi || 'Tidak ada deskripsi'}</p>
                         
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <div>
                                 <label class="block text-sm font-semibold text-gray-700 mb-1">Kode Barang</label>
                                 <p class="text-gray-900">BRG-${String(barangData.id).padStart(3, '0')}</p>
@@ -402,7 +466,15 @@
                                 <p class="text-gray-900">${barangData.kategori?.nama_kategori || 'Tidak ada kategori'}</p>
                             </div>
                             <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-1">Jumlah</label>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Jumlah Total</label>
+                                <p class="text-gray-900">${barangData.jumlah + (barangData.peminjamans ? barangData.peminjamans.reduce((sum, p) => sum + p.jumlah, 0) : 0)} unit</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Sedang Dipinjam</label>
+                                <p class="text-gray-900">${barangData.peminjamans ? barangData.peminjamans.reduce((sum, p) => sum + p.jumlah, 0) : 0} unit</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Tersedia</label>
                                 <p class="text-gray-900">${barangData.jumlah} unit</p>
                             </div>
                         </div>

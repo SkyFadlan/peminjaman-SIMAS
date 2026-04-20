@@ -6,6 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use App\Imports\SiswaImport;
+use App\Exports\SiswaTemplateExport; 
+use PDF;
+use Excel;
+use App\Exports\PenggunaExport;
 
 class PenggunaAdminController extends Controller
 {
@@ -26,6 +31,78 @@ class PenggunaAdminController extends Controller
             'totalPetugas', 
             'totalSiswa'
         ));
+    }
+
+    public function showImportForm()
+    {
+        return view('admin.pengguna.import');
+    }
+    
+    /**
+     * Download template Excel
+     */
+    public function downloadTemplate()
+    {
+        return Excel::download(new SiswaTemplateExport, 'template_import_siswa.xlsx');
+    }
+    
+    /**
+     * Import siswa from Excel
+     */
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv|max:5120', // Max 5MB
+        ]);
+        
+        try {
+            $import = new SiswaImport();
+            Excel::import($import, $request->file('file'));
+            
+            $successCount = $import->getSuccessCount();
+            $failures = $import->getFailures();
+            
+            $message = "Berhasil mengimport {$successCount} data siswa.";
+            
+            if (count($failures) > 0) {
+                session()->flash('import_failures', $failures);
+                $message .= " Terdapat " . count($failures) . " data gagal diimport.";
+            }
+            
+            return redirect()->route('admin.pengguna.index')
+                ->with('success', $message);
+                
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Gagal mengimport data: ' . $e->getMessage());
+        }
+    }
+
+    // EXPORT FUNCTIONS
+    public function exportPdf()
+    {
+        $semuaPengguna = User::latest()->get();
+        $pdf = PDF::loadView('admin.pengguna.exports.pdf-semua', compact('semuaPengguna'));
+        return $pdf->download('semua-pengguna-'.date('Y-m-d').'.pdf');
+    }
+
+    public function exportPetugasPdf()
+    {
+        $petugas = User::where('role', 'petugas')->latest()->get();
+        $pdf = PDF::loadView('admin.pengguna.exports.pdf-petugas', compact('petugas'));
+        return $pdf->download('data-petugas-'.date('Y-m-d').'.pdf');
+    }
+
+    public function exportSiswaPdf()
+    {
+        $siswa = User::where('role', 'siswa')->latest()->get();
+        $pdf = PDF::loadView('admin.pengguna.exports.pdf-siswa', compact('siswa'));
+        return $pdf->download('data-siswa-'.date('Y-m-d').'.pdf');
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new PenggunaExport, 'semua-pengguna-'.date('Y-m-d').'.xlsx');
     }
 
     public function store(Request $request) {
@@ -64,13 +141,13 @@ class PenggunaAdminController extends Controller
         // 5. Simpan
         User::create($validated);
 
-        return redirect()->route('pengguna.index')->with('success', 'Pengguna berhasil ditambahkan.');
+        return redirect()->route('admin.pengguna.index')->with('success', 'Pengguna berhasil ditambahkan.');
     }
 
     public function destroy($id) {
         $user = User::findOrFail($id);
         $user->delete();
-        return redirect()->route('pengguna.index')->with('success', 'Pengguna berhasil dihapus.');
+        return redirect()->route('admin.pengguna.index')->with('success', 'Pengguna berhasil dihapus.');
     }
     
     public function update(Request $request, $id) {
@@ -86,7 +163,7 @@ class PenggunaAdminController extends Controller
 
         $user->update($validated);
 
-        return redirect()->route('pengguna.index')->with('success', 'Pengguna berhasil diperbarui.');
+        return redirect()->route('admin.pengguna.index')->with('success', 'Pengguna berhasil diperbarui.');
     }
 
     public function edit($id) {

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Pengguna - SarPras</title>
-    @vite('resources/css/app.css')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -91,6 +91,74 @@
                             <h1 class="text-2xl font-bold text-gray-900">Data Pengguna</h1>
                             <p class="text-sm text-gray-500 mt-0.5">Kelola data petugas dan siswa</p>
                         </div>
+
+                        <!-- Action Bar -->
+<div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div class="flex flex-wrap items-center gap-3">
+        <!-- Tombol tambah yang sudah ada -->
+        <button id="tambahPenggunaBtn" class="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-blue-300 transition-all flex items-center space-x-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            <span>Tambah Pengguna</span>
+        </button>
+
+        <!-- TOMBOL IMPORT SISWA -->
+        <a href="{{ route('admin.pengguna.import.form') }}" 
+           class="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-emerald-300 transition-all flex items-center space-x-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+            </svg>
+            <span>Import Siswa</span>
+        </a>
+
+        <!-- DROPDOWN EXPORT -->
+        <div class="relative" x-data="{ open: false }">
+            <button @click="open = !open" class="px-5 py-2.5 bg-white border border-gray-200 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all flex items-center space-x-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                </svg>
+                <span>Export</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </button>
+            <div x-show="open" @click.away="open = false" class="absolute left-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-200 z-50 py-2">
+                <div class="px-4 py-2 text-xs font-semibold text-gray-500 border-b border-gray-100">EXPORT SEMUA</div>
+                <a href="{{ route('admin.pengguna.export.pdf') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center">
+                    <svg class="w-4 h-4 mr-3 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                    </svg>
+                    PDF - Semua Pengguna
+                </a>
+                <a href="{{ route('admin.pengguna.export.excel') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center">
+                    <svg class="w-4 h-4 mr-3 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    Excel - Semua Pengguna
+                </a>
+                
+                <div class="border-t border-gray-100 my-2"></div>
+                <div class="px-4 py-2 text-xs font-semibold text-gray-500">EXPORT PER TAB</div>
+                <a href="{{ route('admin.pengguna.export.petugas.pdf') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center">
+                    <svg class="w-4 h-4 mr-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                    </svg>
+                    PDF - Petugas
+                </a>
+                <a href="{{ route('admin.pengguna.export.siswa.pdf') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center">
+                    <svg class="w-4 h-4 mr-3 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                    </svg>
+                    PDF - Siswa
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tambahkan Alpine.js untuk dropdown (jika belum ada) -->
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
                         <!-- Right Side Actions -->
                         <div class="flex items-center space-x-3">
@@ -193,6 +261,12 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                                         </svg>
                                     </div>
+                                    <!-- TAMBAHKAN FILTER STATUS DI SINI -->
+                                    <select id="statusFilter" class="px-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <option value="">Semua Status</option>
+                                        <option value="aktif">Aktif</option>
+                                        <option value="nonaktif">Nonaktif</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -266,11 +340,43 @@
                         </div>
                         
                         <!-- Pagination Petugas -->
-                        @if($petugas->hasPages())
-                        <div class="px-6 py-4 bg-gray-50 border-t border-gray-100">
-                            {{ $petugas->appends(['petugas_page' => $petugas->currentPage()])->links('vendor.pagination.tailwind') }}
-                        </div>
-                        @endif
+@if($petugas->hasPages())
+<div class="px-6 py-4 bg-gray-50 border-t border-gray-100">
+    <div class="flex flex-col items-center space-y-2">
+        <!-- Informasi halaman -->
+        <div class="text-sm text-gray-700">
+            Menampilkan {{ $petugas->firstItem() }} - {{ $petugas->lastItem() }} 
+            dari {{ $petugas->total() }} data
+        </div>
+        
+        <!-- Tombol navigasi -->
+        <div class="flex items-center space-x-1">
+            {{-- Previous Page Link --}}
+            @if($petugas->onFirstPage())
+                <span class="px-3 py-1 text-gray-400 bg-gray-100 rounded cursor-not-allowed">Previous</span>
+            @else
+                <a href="{{ $petugas->previousPageUrl() }}" class="px-3 py-1 text-blue-600 bg-blue-50 rounded hover:bg-blue-100">Previous</a>
+            @endif
+
+            {{-- Pagination Elements --}}
+            @foreach($petugas->getUrlRange(1, $petugas->lastPage()) as $page => $url)
+                @if($page == $petugas->currentPage())
+                    <span class="px-3 py-1 text-white bg-blue-600 rounded">{{ $page }}</span>
+                @else
+                    <a href="{{ $url }}" class="px-3 py-1 text-gray-600 bg-gray-100 rounded hover:bg-gray-200">{{ $page }}</a>
+                @endif
+            @endforeach
+
+            {{-- Next Page Link --}}
+            @if($petugas->hasMorePages())
+                <a href="{{ $petugas->nextPageUrl() }}" class="px-3 py-1 text-blue-600 bg-blue-50 rounded hover:bg-blue-100">Next</a>
+            @else
+                <span class="px-3 py-1 text-gray-400 bg-gray-100 rounded cursor-not-allowed">Next</span>
+            @endif
+        </div>
+    </div>
+</div>
+@endif
                     </div>
 
                     <!-- Table Siswa -->
@@ -341,11 +447,43 @@
                         </div>
                         
                         <!-- Pagination Siswa -->
-                        @if($siswa->hasPages())
-                        <div class="px-6 py-4 bg-gray-50 border-t border-gray-100">
-                            {{ $siswa->appends(['siswa_page' => $siswa->currentPage()])->links('vendor.pagination.tailwind') }}
-                        </div>
-                        @endif
+@if($siswa->hasPages())
+<div class="px-6 py-4 bg-gray-50 border-t border-gray-100">
+    <div class="flex flex-col items-center space-y-2">
+        <!-- Informasi halaman -->
+        <div class="text-sm text-gray-700">
+            Menampilkan {{ $siswa->firstItem() }} - {{ $siswa->lastItem() }} 
+            dari {{ $siswa->total() }} data
+        </div>
+        
+        <!-- Tombol navigasi -->
+        <div class="flex items-center space-x-1">
+            {{-- Previous Page Link --}}
+            @if($siswa->onFirstPage())
+                <span class="px-3 py-1 text-gray-400 bg-gray-100 rounded cursor-not-allowed">Previous</span>
+            @else
+                <a href="{{ $siswa->previousPageUrl() }}" class="px-3 py-1 text-blue-600 bg-blue-50 rounded hover:bg-blue-100">Previous</a>
+            @endif
+
+            {{-- Pagination Elements --}}
+            @foreach($siswa->getUrlRange(1, $siswa->lastPage()) as $page => $url)
+                @if($page == $siswa->currentPage())
+                    <span class="px-3 py-1 text-white bg-blue-600 rounded">{{ $page }}</span>
+                @else
+                    <a href="{{ $url }}" class="px-3 py-1 text-gray-600 bg-gray-100 rounded hover:bg-gray-200">{{ $page }}</a>
+                @endif
+            @endforeach
+
+            {{-- Next Page Link --}}
+            @if($siswa->hasMorePages())
+                <a href="{{ $siswa->nextPageUrl() }}" class="px-3 py-1 text-blue-600 bg-blue-50 rounded hover:bg-blue-100">Next</a>
+            @else
+                <span class="px-3 py-1 text-gray-400 bg-gray-100 rounded cursor-not-allowed">Next</span>
+            @endif
+        </div>
+    </div>
+</div>
+@endif
                     </div>
                 </div>
             </main>

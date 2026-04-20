@@ -12,7 +12,9 @@ class BarangAdminController extends Controller
 {
     public function index() {
         // Mengambil data barang dengan pagination
-        $barangs = Barang::with('kategori')->latest()->paginate(10);
+        $barangs = Barang::with('kategori')->with(['peminjamans' => function($query) {
+            $query->whereIn('status', ['disetujui', 'dipinjam', 'terlambat']);
+        }])->latest()->paginate(10);
         
         // Mengambil data kategori untuk dropdown
         $kategoris = Kategori::all();
@@ -41,7 +43,7 @@ class BarangAdminController extends Controller
         // Simpan barang
         Barang::create($validated);
 
-        return redirect()->route('barang.index')->with('success', 'Barang berhasil ditambahkan.');
+        return redirect()->route('admin.barang.index')->with('success', 'Barang berhasil ditambahkan.');
     }
 
     public function destroy($id) {
@@ -54,7 +56,7 @@ class BarangAdminController extends Controller
         
         $barang->delete();
         
-        return redirect()->route('barang.index')->with('success', 'Barang berhasil dihapus.');
+        return redirect()->route('admin.barang.index')->with('success', 'Barang berhasil dihapus.');
     }
 
     public function update(Request $request, $id) {
@@ -81,7 +83,7 @@ class BarangAdminController extends Controller
 
         $barang->update($validated);
 
-        return redirect()->route('barang.index')->with('success', 'Barang berhasil diperbarui.');
+        return redirect()->route('admin.barang.index')->with('success', 'Barang berhasil diperbarui.');
     }
 
     public function edit($id) {

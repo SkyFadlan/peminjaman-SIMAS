@@ -23,6 +23,11 @@ class Barang extends Model
         return $this->belongsTo(Kategori::class, 'kategori_id');
     }
 
+    public function peminjamans()
+    {
+        return $this->hasMany(Peminjaman::class, 'barang_id');
+    }
+
     // Accessor untuk gambar URL
     public function getGambarUrlAttribute()
     {

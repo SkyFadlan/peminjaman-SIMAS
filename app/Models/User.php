@@ -23,6 +23,8 @@ class User extends Authenticatable
         'nisn',
         'role',
         'password',
+        'phone',
+        'last_login_at',
     ];
 
     /**
@@ -34,7 +36,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
         'nisn',
-        'role',
+        'role', // Hapus 'role' dari sini jika perlu diakses di controller
     ];
 
     /**
@@ -47,12 +49,25 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'last_login_at' => 'datetime',
             'nisn' => 'string',
             'role' => 'string', // Pertimbangkan enum jika role terbatas
         ];
     }
 
-    public $timestamps = true; // Atau false jika tidak perlu
+    public $timestamps = true;
+
+    // Method untuk cek role
+    public function hasRole($role)
+    {
+        return $this->role === $role;
+    }
+
+    // Method untuk cek multiple roles
+    public function hasAnyRole(array $roles)
+    {
+        return in_array($this->role, $roles);
+    }
 
     public function isSiswa()
     {

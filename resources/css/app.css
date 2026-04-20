@@ -1,3 +1,113 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    color-scheme: light;
+    --bg: #f8fafc;
+    --surface: #ffffff;
+    --surface-alt: #f1f5f9;
+    --text: #0f172a;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+}
+
+.dark {
+    color-scheme: dark;
+    --bg: #0b1120;
+    --surface: #111827;
+    --surface-alt: #0f172a;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --border: #334155;
+}
+
+html {
+    background: var(--bg);
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    transition:
+        background-color 0.25s ease,
+        color 0.25s ease;
+}
+
+.dark body {
+    background: var(--bg);
+    color: var(--text);
+}
+
+.dark .bg-white {
+    background-color: #111827 !important;
+}
+
+.dark .bg-gray-50 {
+    background-color: #0f172a !important;
+}
+
+.dark .bg-gray-100 {
+    background-color: #111827 !important;
+}
+
+.dark .text-gray-900,
+.dark .text-gray-800,
+.dark .text-gray-700 {
+    color: #e2e8f0 !important;
+}
+
+.dark .text-gray-600 {
+    color: #cbd5e1 !important;
+}
+
+.dark .text-gray-500 {
+    color: #94a3b8 !important;
+}
+
+.dark .border-gray-200 {
+    border-color: #334155 !important;
+}
+
+.dark .border-gray-100 {
+    border-color: #1f2937 !important;
+}
+
+.dark .hover\:bg-gray-100:hover {
+    background-color: #1f2937 !important;
+}
+
+.dark .hover\:bg-gray-50:hover {
+    background-color: #111827 !important;
+}
+
+.dark .hover\:bg-blue-50:hover {
+    background-color: #1e3a8a !important;
+}
+
+.dark .hover\:bg-indigo-50:hover {
+    background-color: #312e81 !important;
+}
+
+.dark .hover\:bg-emerald-50:hover {
+    background-color: #064e3b !important;
+}
+
+.dark .shadow-sm {
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.4);
+}
+
+.dark .shadow-lg {
+    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.35);
+}
+
+.theme-toggle-button {
+    transition:
+        background-color 0.25s ease,
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+.theme-toggle-button:hover {
+    transform: translateY(-1px);
+}
