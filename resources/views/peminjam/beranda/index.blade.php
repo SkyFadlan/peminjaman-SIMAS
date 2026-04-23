@@ -303,87 +303,102 @@
             </div>
         </div>
 
-        <!-- Item Grid -->
-        <div id="itemGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 lg:gap-6">
-            @forelse($barangs as $barang)
-            @php
-                $statusClass = '';
-                $statusText = '';
-                $stockClass = '';
-                
-                if ($barang->jumlah > 5) {
-                    $statusClass = 'bg-green-100 text-green-700';
-                    $statusText = 'Tersedia';
-                    $stockClass = 'text-fuchsia-600';
-                } elseif ($barang->jumlah > 0 && $barang->jumlah <= 5) {
-                    $statusClass = 'bg-yellow-100 text-yellow-700';
-                    $statusText = 'Stok Terbatas';
-                    $stockClass = 'text-yellow-600';
-                } else {
-                    $statusClass = 'bg-red-100 text-red-700';
-                    $statusText = 'Tidak Tersedia';
-                    $stockClass = 'text-red-600';
-                }
-                
-                $categoryColors = [
-                    'Elektronik' => ['bg' => 'bg-fuchsia-100', 'text' => 'text-fuchsia-700'],
-                    'Buku' => ['bg' => 'bg-blue-100', 'text' => 'text-blue-700'],
-                    'Laboratorium' => ['bg' => 'bg-purple-100', 'text' => 'text-purple-700'],
-                    'Olahraga' => ['bg' => 'bg-orange-100', 'text' => 'text-orange-700'],
-                    'Multimedia' => ['bg' => 'bg-pink-100', 'text' => 'text-pink-700'],
-                    'default' => ['bg' => 'bg-gray-100', 'text' => 'text-gray-700']
-                ];
-                
-                $categoryName = $barang->kategori->nama_kategori ?? 'Lainnya';
-                $categoryColor = $categoryColors[$categoryName] ?? $categoryColors['default'];
-                $imagePath = $barang->gambar ? Storage::url($barang->gambar) : 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=400';
-            @endphp
+        <!-- Item Grid - Ubah class grid -->
+<div id="itemGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5 lg:gap-6">
+    @forelse($barangs as $barang)
+    @php
+        $statusClass = '';
+        $statusText = '';
+        $stockClass = '';
+        
+        if ($barang->jumlah > 5) {
+            $statusClass = 'bg-green-100 text-green-700';
+            $statusText = 'Tersedia';
+            $stockClass = 'text-fuchsia-600';
+        } elseif ($barang->jumlah > 0 && $barang->jumlah <= 5) {
+            $statusClass = 'bg-yellow-100 text-yellow-700';
+            $statusText = 'Stok Terbatas';
+            $stockClass = 'text-yellow-600';
+        } else {
+            $statusClass = 'bg-red-100 text-red-700';
+            $statusText = 'Tidak Tersedia';
+            $stockClass = 'text-red-600';
+        }
+        
+        $categoryColors = [
+            'Elektronik' => ['bg' => 'bg-fuchsia-100', 'text' => 'text-fuchsia-700'],
+            'Buku' => ['bg' => 'bg-blue-100', 'text' => 'text-blue-700'],
+            'Laboratorium' => ['bg' => 'bg-purple-100', 'text' => 'text-purple-700'],
+            'Olahraga' => ['bg' => 'bg-orange-100', 'text' => 'text-orange-700'],
+            'Multimedia' => ['bg' => 'bg-pink-100', 'text' => 'text-pink-700'],
+            'default' => ['bg' => 'bg-gray-100', 'text' => 'text-gray-700']
+        ];
+        
+        $categoryName = $barang->kategori->nama_kategori ?? 'Lainnya';
+        $categoryColor = $categoryColors[$categoryName] ?? $categoryColors['default'];
+        $imagePath = $barang->gambar ? Storage::url($barang->gambar) : 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=400';
+    @endphp
+    
+    <!-- CARD BUKU - TAMPILAN PORTRAIT/VERTICAL -->
+    <div class="item-card bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group fade-in border border-gray-100" 
+         data-category="{{ $barang->kategori_id }}" 
+         data-stock="{{ $barang->jumlah }}"
+         data-name="{{ strtolower($barang->nama_barang) }}">
+        
+        <!-- Cover Buku/Gambar - Aspect ratio 3:4 seperti buku -->
+        <div class="relative overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200" style="aspect-ratio: 3/4;">
+            <img src="{{ $imagePath }}" alt="{{ $barang->nama_barang }}" 
+                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
             
-            <div class="item-card bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group fade-in" 
-                 data-category="{{ $barang->kategori_id }}" 
-                 data-stock="{{ $barang->jumlah }}"
-                 data-name="{{ strtolower($barang->nama_barang) }}">
-                <div class="relative overflow-hidden">
-                    <img src="{{ $imagePath }}" alt="{{ $barang->nama_barang }}" class="w-full h-44 sm:h-48 object-cover group-hover:scale-110 transition-transform duration-300">
-                    <div class="absolute top-3 left-3">
-                        <span class="px-3 py-1 {{ $statusClass }} rounded-full text-xs font-bold shadow-lg">{{ $statusText }}</span>
-                    </div>
-                </div>
-                <div class="p-4 sm:p-5">
-                    <div class="flex items-center space-x-2 mb-2">
-                        <span class="px-2 py-1 {{ $categoryColor['bg'] }} {{ $categoryColor['text'] }} rounded-md text-xs font-semibold">
-                            {{ $categoryName }}
-                        </span>
-                        <span class="text-xs text-gray-500">BRG-{{ str_pad($barang->id, 3, '0', STR_PAD_LEFT) }}</span>
-                    </div>
-                    <h3 class="text-base sm:text-lg font-bold text-gray-900 mb-2 line-clamp-2">{{ $barang->nama_barang }}</h3>
-                    <p class="text-sm text-gray-600 mb-3 line-clamp-2">{{ $barang->deskripsi ?? 'Tanpa deskripsi' }}</p>
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center space-x-2">
-                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-                            </svg>
-                            <span class="text-sm font-semibold text-gray-700">Stok: <span class="{{ $stockClass }}">{{ $barang->jumlah }} unit</span></span>
-                        </div>
-                    </div>
-                    <button onclick="openDetail({{ $barang->id }})" {{ $barang->jumlah == 0 ? 'disabled' : '' }} 
-                        class="w-full py-2.5 sm:py-3 {{ $barang->jumlah > 0 ? 'bg-gradient-to-r from-fuchsia-600 to-pink-500 text-white hover:shadow-lg hover:shadow-fuchsia-300' : 'bg-gray-300 text-gray-500 cursor-not-allowed' }} rounded-xl font-semibold transition-all text-sm sm:text-base">
-                        {{ $barang->jumlah > 0 ? 'Lihat Detail' : 'Tidak Tersedia' }}
-                    </button>
-                </div>
+            <!-- Badge Status di pojok kiri atas -->
+            <div class="absolute top-2 left-2">
+                <span class="px-2 py-0.5 {{ $statusClass }} rounded-full text-xs font-bold shadow-md">{{ $statusText }}</span>
             </div>
-            @empty
-            <div class="col-span-full text-center py-12">
-                <div class="w-24 h-24 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-                    <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            
+            <!-- Overlay gradient di bagian bawah -->
+            <div class="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/50 to-transparent"></div>
+        </div>
+        
+        <!-- Informasi Buku -->
+        <div class="p-3">
+            <div class="flex items-center justify-between mb-1">
+                <span class="px-1.5 py-0.5 {{ $categoryColor['bg'] }} {{ $categoryColor['text'] }} rounded text-[10px] font-semibold">
+                    {{ $categoryName }}
+                </span>
+                <span class="text-[10px] text-gray-400">BRG-{{ str_pad($barang->id, 3, '0', STR_PAD_LEFT) }}</span>
+            </div>
+            
+            <h3 class="text-sm font-bold text-gray-900 mb-1 line-clamp-2 min-h-[2.5rem]">{{ $barang->nama_barang }}</h3>
+            
+            <p class="text-xs text-gray-500 mb-2 line-clamp-2 min-h-[2rem]">{{ Str::limit($barang->deskripsi ?? 'Tanpa deskripsi', 50) }}</p>
+            
+            <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center space-x-1">
+                    <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
                     </svg>
+                    <span class="text-xs font-semibold text-gray-700">Stok: <span class="{{ $stockClass }}">{{ $barang->jumlah }}</span></span>
                 </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-2">Belum ada barang tersedia</h3>
-                <p class="text-gray-600">Silakan hubungi admin untuk informasi lebih lanjut.</p>
             </div>
-            @endforelse
+            
+            <button onclick="openDetail({{ $barang->id }})" {{ $barang->jumlah == 0 ? 'disabled' : '' }} 
+                class="w-full py-2 {{ $barang->jumlah > 0 ? 'bg-gradient-to-r from-fuchsia-600 to-pink-500 text-white hover:shadow-lg hover:shadow-fuchsia-300' : 'bg-gray-300 text-gray-500 cursor-not-allowed' }} rounded-lg font-semibold transition-all text-xs">
+                {{ $barang->jumlah > 0 ? 'Lihat Detail' : 'Tidak Tersedia' }}
+            </button>
         </div>
+    </div>
+    @empty
+    <div class="col-span-full text-center py-12">
+        <div class="w-24 h-24 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+            <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+            </svg>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 mb-2">Belum ada barang tersedia</h3>
+        <p class="text-gray-600">Silakan hubungi admin untuk informasi lebih lanjut.</p>
+    </div>
+    @endforelse
+</div>
 
         <!-- Load More -->
         @if($barangs->hasPages())
@@ -587,7 +602,6 @@
         }
 
         // Open detail modal
-        // Open detail modal
 function openDetail(barangId) {
     const barang = allBarangs.find(b => b.id === barangId);
     if (!barang) return;
@@ -627,97 +641,127 @@ function openDetail(barangId) {
     
     const modalContent = `
         <!-- Modal Header -->
-        <div class="sticky top-0 bg-white border-b border-gray-200 px-5 sm:px-6 py-4 flex items-center justify-between z-10">
-            <h3 class="text-lg sm:text-xl font-bold text-gray-900">Detail Item</h3>
+        <div class="sticky top-0 bg-white border-b border-gray-200 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between z-10">
+            <h3 class="text-base sm:text-lg font-bold text-gray-900 flex items-center">
+                <svg class="w-5 h-5 mr-2 text-fuchsia-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                </svg>
+                Detail Buku
+            </h3>
             <button onclick="closeModal()" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button>
         </div>
 
         <!-- Modal Body -->
-        <div class="p-5 sm:p-6 max-h-[calc(100vh-120px)] overflow-y-auto">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-                <!-- Left: Image -->
-                <div>
-                    <div class="mb-4">
-                        <img src="${imagePath}" alt="${barang.nama_barang}" class="w-full h-60 sm:h-72 lg:h-80 object-cover rounded-xl">
+        <div class="p-4 sm:p-6 max-h-[calc(100vh-120px)] overflow-y-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+                <!-- Left: Cover Buku - Portrait style -->
+                <div class="flex justify-center">
+                    <div class="relative w-64 sm:w-72 md:w-full max-w-[280px] mx-auto">
+                        <!-- Cover dengan aspect ratio 3:4 seperti buku -->
+                        <div class="relative overflow-hidden rounded-xl shadow-2xl bg-gradient-to-br from-gray-100 to-gray-200" style="aspect-ratio: 3/4;">
+                            <img src="${imagePath}" alt="${barang.nama_barang}" class="w-full h-full object-cover">
+                            
+                            <!-- Badge status di cover -->
+                            <div class="absolute top-3 left-3">
+                                <span class="px-2 py-1 ${statusClass} rounded-lg text-xs font-bold shadow-md">${statusText}</span>
+                            </div>
+                            
+                            <!-- Efek halaman buku -->
+                            <div class="absolute inset-0 pointer-events-none">
+                                <div class="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-black/10 to-transparent"></div>
+                                <div class="absolute right-0 top-0 bottom-0 w-4 bg-gradient-to-l from-black/10 to-transparent"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Kode buku di bawah cover -->
+                        <div class="text-center mt-3">
+                            <span class="text-xs text-gray-500">Kode: BRG-${String(barang.id).padStart(3, '0')}</span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Right: Details -->
+                <!-- Right: Details Buku -->
                 <div>
+                    <!-- Kategori & Status -->
                     <div class="flex flex-wrap items-center gap-2 mb-3">
-                        <span class="px-3 py-1 ${statusClass} rounded-full text-xs sm:text-sm font-bold">${statusText}</span>
-                        <span class="px-3 py-1 ${categoryColor[0]} ${categoryColor[1]} rounded-full text-xs sm:text-sm font-semibold">${categoryName}</span>
+                        <span class="px-3 py-1 ${categoryColor[0]} ${categoryColor[1]} rounded-full text-xs font-semibold">${categoryName}</span>
+                        <span class="px-3 py-1 ${statusClass} rounded-full text-xs font-semibold">${statusText}</span>
                     </div>
-                    <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2">${barang.nama_barang}</h2>
-                    <p class="text-sm sm:text-base text-gray-600 mb-4">Kode: BRG-${String(barang.id).padStart(3, '0')}</p>
                     
-                    <!-- Deskripsi -->
-                    <div class="bg-gray-50 rounded-xl p-4 mb-6">
-                        <h3 class="font-bold text-gray-900 mb-3">Deskripsi:</h3>
-                        <p class="text-sm text-gray-600 leading-relaxed">${barang.deskripsi || 'Tidak ada deskripsi yang tersedia.'}</p>
-                    </div>
-
-                    <!-- Stock Info -->
-                    <div class="bg-fuchsia-50 border border-fuchsia-200 rounded-xl p-4 mb-6">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-2">
-                                <svg class="w-5 h-5 text-fuchsia-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-                                </svg>
-                                <span class="font-semibold text-fuchsia-900">Stok Tersedia:</span>
-                            </div>
-                            <span class="text-xl sm:text-2xl font-bold ${stockClass}">${barang.jumlah} unit</span>
+                    <!-- Judul Buku -->
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-3 leading-tight">${barang.nama_barang}</h2>
+                    
+                    <!-- Detail singkat -->
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                        <div class="bg-gray-50 rounded-lg p-3 text-center">
+                            <svg class="w-5 h-5 text-fuchsia-500 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                            </svg>
+                            <p class="text-xs text-gray-500">Stok Tersedia</p>
+                            <p class="text-lg font-bold ${stockClass}">${barang.jumlah} unit</p>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-3 text-center">
+                            <svg class="w-5 h-5 text-fuchsia-500 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <p class="text-xs text-gray-500">Maksimal Pinjam</p>
+                            <p class="text-lg font-bold text-fuchsia-600">${barang.jumlah > 0 ? '7 hari / 8 jam' : '0'}</p>
                         </div>
                     </div>
+                    
+                    <!-- Deskripsi Buku -->
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 mb-6">
+                        <h3 class="font-bold text-gray-900 mb-2 flex items-center text-sm">
+                            <svg class="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
+                            </svg>
+                            Sinopsis / Deskripsi
+                        </h3>
+                        <p class="text-sm text-gray-700 leading-relaxed">${barang.deskripsi || 'Tidak ada deskripsi yang tersedia untuk buku ini.'}</p>
+                    </div>
 
-                    <!-- QUANTITY SELECTOR - INI YANG DITAMBAHKAN -->
+                    <!-- QUANTITY SELECTOR -->
                     <div class="mb-6 p-4 bg-gradient-to-r from-fuchsia-50 to-pink-50 rounded-xl border border-fuchsia-200">
                         <label class="block text-sm font-bold text-gray-900 mb-3 flex items-center">
                             <svg class="w-5 h-5 mr-2 text-fuchsia-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                             </svg>
                             Jumlah yang Ingin Dipinjam
                         </label>
                         <div class="flex items-center justify-between">
                             <div class="flex items-center space-x-3">
-                                <button onclick="decrementJumlah('jumlahPinjam', ${barang.jumlah})" class="w-10 h-10 bg-white rounded-lg border border-fuchsia-200 hover:bg-fuchsia-100 transition-colors flex items-center justify-center text-xl font-bold text-fuchsia-700 shadow-sm">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <button onclick="decrementJumlah('jumlahPinjam', ${barang.jumlah})" class="w-8 h-8 bg-white rounded-lg border border-fuchsia-200 hover:bg-fuchsia-100 transition-colors flex items-center justify-center text-lg font-bold text-fuchsia-700 shadow-sm">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
                                     </svg>
                                 </button>
                                 <input type="number" id="jumlahPinjam" value="1" min="1" max="${barang.jumlah}" 
                                     onchange="validateJumlah(this, ${barang.jumlah})"
-                                    class="w-16 text-center px-2 py-2 border border-fuchsia-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-fuchsia-500 font-semibold text-fuchsia-700">
-                                <button onclick="incrementJumlah('jumlahPinjam', ${barang.jumlah})" class="w-10 h-10 bg-white rounded-lg border border-fuchsia-200 hover:bg-fuchsia-100 transition-colors flex items-center justify-center text-xl font-bold text-fuchsia-700 shadow-sm">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    class="w-14 text-center px-2 py-2 border border-fuchsia-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-fuchsia-500 font-semibold text-fuchsia-700 text-sm">
+                                <button onclick="incrementJumlah('jumlahPinjam', ${barang.jumlah})" class="w-8 h-8 bg-white rounded-lg border border-fuchsia-200 hover:bg-fuchsia-100 transition-colors flex items-center justify-center text-lg font-bold text-fuchsia-700 shadow-sm">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                                     </svg>
                                 </button>
                             </div>
-                            <div class="text-sm text-gray-600">
+                            <div class="text-xs text-gray-600">
                                 <span class="font-medium">Maksimal:</span> ${barang.jumlah} unit
                             </div>
                         </div>
-                        <p class="text-xs text-gray-500 mt-3 flex items-center">
-                            <svg class="w-4 h-4 mr-1 text-fuchsia-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            Jumlah yang dipinjam akan mengurangi stok barang
-                        </p>
                     </div>
 
                     <!-- Tipe Peminjaman -->
                     <div class="mb-6">
-                        <label class="block text-sm font-bold text-gray-900 mb-3">⏰ Tipe Peminjaman:</label>
+                        <label class="block text-sm font-bold text-gray-900 mb-3">⏰ Pilih Metode Peminjaman:</label>
                         <div class="grid grid-cols-2 gap-3">
-                            <button onclick="setLoanType('hari')" id="loanTypeHari" class="px-4 py-3 border-2 border-fuchsia-500 bg-fuchsia-50 rounded-xl font-semibold text-fuchsia-700 transition-all active">
+                            <button onclick="setLoanType('hari')" id="loanTypeHari" class="px-4 py-3 border-2 border-fuchsia-500 bg-fuchsia-50 rounded-xl font-semibold text-fuchsia-700 transition-all text-sm active">
                                 📅 Per Hari
                             </button>
-                            <button onclick="setLoanType('jam')" id="loanTypeJam" class="px-4 py-3 border-2 border-gray-200 rounded-xl font-semibold text-gray-700 hover:border-fuchsia-500 hover:bg-fuchsia-50 transition-all">
+                            <button onclick="setLoanType('jam')" id="loanTypeJam" class="px-4 py-3 border-2 border-gray-200 rounded-xl font-semibold text-gray-700 hover:border-fuchsia-500 hover:bg-fuchsia-50 transition-all text-sm">
                                 ⏰ Per Jam
                             </button>
                         </div>
@@ -725,78 +769,82 @@ function openDetail(barangId) {
 
                     <!-- Form Peminjaman - Per Hari -->
                     <div id="durationHari" class="mb-6">
-                        <label class="block text-sm font-bold text-gray-900 mb-3">📅 Detail Peminjaman Per Hari:</label>
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Ambil</label>
-                                <input type="date" id="pickupDateHari" value="${today}" min="${today}" class="custom-datepicker">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Kembali</label>
-                                <input type="date" id="returnDateHari" value="${tomorrow}" min="${today}" onchange="validateReturnDate()" class="custom-datepicker">
+                        <div class="bg-white rounded-xl border border-gray-200 p-4">
+                            <label class="block text-xs font-bold text-gray-900 mb-3 flex items-center">
+                                <svg class="w-4 h-4 mr-1 text-fuchsia-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                Detail Peminjaman
+                            </label>
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-700 mb-1">Tanggal Ambil</label>
+                                    <input type="date" id="pickupDateHari" value="${today}" min="${today}" class="custom-datepicker text-sm py-2">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-700 mb-1">Tanggal Kembali</label>
+                                    <input type="date" id="returnDateHari" value="${tomorrow}" min="${today}" onchange="validateReturnDate()" class="custom-datepicker text-sm py-2">
+                                </div>
+                                <div class="info-box text-xs p-2">
+                                    <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    Maksimal peminjaman 7 hari
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Form Peminjaman - Per Jam -->
                     <div id="durationJam" class="mb-6 hidden">
-                        <label class="block text-sm font-bold text-gray-900 mb-3">⏰ Detail Peminjaman Per Jam:</label>
-                        
-                        <!-- Info Box -->
-                        <div class="info-box mb-4 flex items-start space-x-2">
-                            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <span class="text-xs sm:text-sm">Peminjaman per jam hanya berlaku di hari yang sama. Tanggal kembali otomatis mengikuti tanggal ambil.</span>
-                        </div>
-                        
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Ambil</label>
-                                <input type="date" id="pickupDateJam" value="${today}" min="${today}" onchange="updateReturnDateJam()" class="custom-datepicker">
+                        <div class="bg-white rounded-xl border border-gray-200 p-4">
+                            <label class="block text-xs font-bold text-gray-900 mb-3 flex items-center">
+                                <svg class="w-4 h-4 mr-1 text-fuchsia-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Detail Peminjaman
+                            </label>
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-700 mb-1">Tanggal Ambil</label>
+                                    <input type="date" id="pickupDateJam" value="${today}" min="${today}" onchange="updateReturnDateJam()" class="custom-datepicker text-sm py-2">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-700 mb-1">Jam Ambil</label>
+                                    <input type="time" id="pickupTime" value="${currentTime}" class="time-input text-sm py-2">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-700 mb-1">Jam Kembali</label>
+                                    <input type="time" id="returnTime" value="${currentTime}" onchange="validateReturnTime()" class="time-input text-sm py-2">
+                                </div>
+                                <div class="info-box text-xs p-2">
+                                    <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    Peminjaman per jam hanya berlaku di hari yang sama, maksimal 8 jam
+                                </div>
                             </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Jam Ambil</label>
-                                <input type="time" id="pickupTime" value="${currentTime}" class="time-input">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Kembali</label>
-                                <input type="date" id="returnDateJam" value="${today}" class="custom-datepicker" readonly>
-                                <p class="text-xs text-gray-500 mt-1">* Otomatis mengikuti tanggal ambil</p>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Jam Kembali</label>
-                                <input type="time" id="returnTime" value="${currentTime}" onchange="validateReturnTime()" class="time-input">
-                                <p class="text-xs text-gray-500 mt-1">* Minimal 1 jam setelah jam ambil</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- TOTAL YANG DIPINJAM SUMMARY -->
-                    <div class="mb-6 p-4 bg-gradient-to-r from-fuchsia-600 to-pink-500 rounded-xl text-white shadow-lg">
-                        <div class="flex justify-between items-center">
-                            <span class="font-semibold">Total yang dipinjam:</span>
-                            <span class="text-2xl font-bold" id="totalYangDipinjam">1</span>
-                            <span class="text-sm opacity-90">unit</span>
                         </div>
                     </div>
 
                     <!-- Alasan Peminjaman -->
                     <div class="mb-6">
-                        <label class="block text-sm font-bold text-gray-900 mb-3">📝 Alasan Peminjaman</label>
-                        <textarea id="reason" class="reason-textarea" placeholder="Tuliskan alasan Anda meminjam barang ini... (contoh: untuk praktikum, tugas kelompok, dll)"></textarea>
-                        <p class="text-xs text-gray-500 mt-2">* Alasan wajib diisi dan akan dipertimbangkan oleh petugas</p>
+                        <label class="block text-sm font-bold text-gray-900 mb-2">📝 Alasan Peminjaman</label>
+                        <textarea id="reason" class="reason-textarea text-sm" rows="2" placeholder="Tuliskan alasan Anda meminjam buku ini... (contoh: untuk tugas, referensi, dll)"></textarea>
                     </div>
 
                     <!-- Actions -->
-                    <div class="space-y-3">
+                    <div class="space-y-2">
                         <button onclick="submitRequest(${barang.id})" ${barang.jumlah === 0 ? 'disabled' : ''} 
-                            class="w-full py-3 sm:py-4 ${barang.jumlah > 0 ? 'bg-gradient-to-r from-fuchsia-600 to-pink-500 text-white hover:shadow-lg hover:shadow-fuchsia-300' : 'bg-gray-300 text-gray-500 cursor-not-allowed'} rounded-xl font-bold text-base sm:text-lg transition-all">
-                            ${barang.jumlah > 0 ? 'Ajukan Peminjaman Langsung' : 'Tidak Tersedia'}
+                            class="w-full py-2.5 ${barang.jumlah > 0 ? 'bg-gradient-to-r from-fuchsia-600 to-pink-500 text-white hover:shadow-lg hover:shadow-fuchsia-300' : 'bg-gray-300 text-gray-500 cursor-not-allowed'} rounded-xl font-bold text-sm transition-all flex items-center justify-center space-x-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                            </svg>
+                            <span>${barang.jumlah > 0 ? 'Ajukan Peminjaman' : 'Tidak Tersedia'}</span>
                         </button>
                         <button onclick="addToCartFromModal(${barang.id}, '${barang.nama_barang}', '${imagePath}', ${barang.kategori_id}, '${categoryName}', ${barang.jumlah})" ${barang.jumlah === 0 ? 'disabled' : ''} 
-                            class="w-full py-3 sm:py-4 ${barang.jumlah > 0 ? 'bg-white text-fuchsia-600 border-2 border-fuchsia-600 hover:bg-fuchsia-50' : 'bg-gray-300 text-gray-500 cursor-not-allowed'} rounded-xl font-bold text-base sm:text-lg transition-all flex items-center justify-center space-x-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            class="w-full py-2.5 ${barang.jumlah > 0 ? 'bg-white text-fuchsia-600 border-2 border-fuchsia-600 hover:bg-fuchsia-50' : 'bg-gray-300 text-gray-500 cursor-not-allowed'} rounded-xl font-bold text-sm transition-all flex items-center justify-center space-x-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
                             </svg>
                             <span>${barang.jumlah > 0 ? 'Tambah ke Keranjang' : 'Tidak Tersedia'}</span>
@@ -806,44 +854,43 @@ function openDetail(barangId) {
             </div>
 
             <!-- Syarat & Ketentuan -->
-            <div class="mt-8 border-t border-gray-200 pt-8">
-                <h3 class="font-bold text-gray-900 mb-3">Syarat & Ketentuan:</h3>
-                <ul class="space-y-2 text-sm text-gray-600">
+            <div class="mt-8 border-t border-gray-200 pt-6">
+                <h3 class="font-bold text-gray-900 mb-3 text-sm flex items-center">
+                    <svg class="w-5 h-5 mr-2 text-fuchsia-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Syarat & Ketentuan
+                </h3>
+                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-gray-600">
                     <li class="flex items-start space-x-2">
-                        <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                         </svg>
-                        <span>Wajib menyertakan Kartu Pelajar saat mengambil barang</span>
+                        <span>Maksimal peminjaman: 7 hari (hari) atau 8 jam (jam)</span>
                     </li>
                     <li class="flex items-start space-x-2">
-                        <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        <span>Maksimal peminjaman: <span class="font-semibold">7 hari</span> (per hari) atau <span class="font-semibold">8 jam</span> (per jam)</span>
-                    </li>
-                    <li class="flex items-start space-x-2">
-                        <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                         </svg>
                         <span>Peminjaman per jam hanya berlaku di hari yang sama</span>
                     </li>
                     <li class="flex items-start space-x-2">
-                        <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                         </svg>
                         <span>Tidak boleh meminjamkan ke pihak lain</span>
                     </li>
                     <li class="flex items-start space-x-2">
-                        <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                         </svg>
                         <span>Bertanggung jawab penuh atas kerusakan/kehilangan</span>
                     </li>
                     <li class="flex items-start space-x-2">
-                        <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                         </svg>
-                        <span>Denda keterlambatan: <span class="font-semibold">Rp 5.000/hari</span> atau <span class="font-semibold">Rp 2.000/jam</span></span>
+                        <span>Denda keterlambatan: Rp 5.000/hari atau Rp 2.000/jam</span>
                     </li>
                 </ul>
             </div>

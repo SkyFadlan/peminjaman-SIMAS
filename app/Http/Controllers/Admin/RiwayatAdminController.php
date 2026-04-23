@@ -7,6 +7,8 @@ use App\Models\Peminjaman;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Exports\RiwayatExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RiwayatAdminController extends Controller
 {
@@ -87,6 +89,22 @@ class RiwayatAdminController extends Controller
             'kategoris'
         ));
     }
+
+        public function export()
+{
+    
+    $startDate = request('start_date');
+    $endDate = request('end_date');
+    $status = request('status');
+    $kategori = request('kategori');
+    $search = request('search');
+    
+    $filename = 'riwayat-peminjaman-' . date('Y-m-d-His') . '.xlsx';
+    
+    return Excel::download(new RiwayatExport($startDate, $endDate, $status, $kategori, $search), $filename);
+}
+
+
 
     /**
      * Menampilkan detail transaksi

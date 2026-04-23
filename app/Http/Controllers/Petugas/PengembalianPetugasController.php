@@ -94,7 +94,7 @@ class PengembalianPetugasController extends Controller
     
     $kategoris = Kategori::all();
     
-    return view('petugas.pengembalian.index', compact(
+    return view('admin.pengembalian.index', compact(
         'peminjamans',
         'peminjamanJatuhTempo',
         'peminjamanTerlambat',  // ✅ PASTIKAN VARIABEL INI ADA

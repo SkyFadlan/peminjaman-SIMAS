@@ -40,7 +40,7 @@ class KategoriAdminController extends Controller
 
         Kategori::create($validated);
 
-        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil ditambahkan.');
+        return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil ditambahkan.');
     }
 
     public function update(Request $request, $id)
@@ -54,7 +54,7 @@ class KategoriAdminController extends Controller
 
         $kategori->update($validated);
 
-        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil diperbarui.');
+        return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil diperbarui.');
     }
 
     public function destroy($id)
@@ -63,12 +63,12 @@ class KategoriAdminController extends Controller
         
         // Cek apakah kategori digunakan oleh barang
         if ($kategori->barang()->count() > 0) {
-            return redirect()->route('kategori.index')
+            return redirect()->route('admin.kategori.index')
                 ->with('error', 'Kategori tidak dapat dihapus karena masih digunakan oleh beberapa barang.');
         }
         
         $kategori->delete();
         
-        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil dihapus.');
+        return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil dihapus.');
     }
 }

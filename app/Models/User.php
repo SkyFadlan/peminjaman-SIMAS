@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'nisn',
         'role',
+        'kelas',
         'password',
         'phone',
         'last_login_at',

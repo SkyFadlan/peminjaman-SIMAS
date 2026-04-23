@@ -30,7 +30,7 @@
                             <svg class="w-5 h-5 text-gray-400 peer-checked:text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
-                            <span class="text-sm font-medium text-gray-700 peer-checked:text-indigo-700">Petugas</span>
+                            <span class="text-sm font-medium text-gray-700 peer-checked:text-indigo-700">Admin</span>
                         </div>
                         <div class="absolute -top-2 -right-2 w-5 h-5 bg-indigo-500 rounded-full hidden peer-checked:flex items-center justify-center">
                             <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -147,6 +147,12 @@
         <!-- Footer -->
         <div class="mt-8 pt-6 border-t border-gray-200 text-center">
             <p class="text-sm text-gray-600">
+                Belum punya akun siswa?
+                <a href="{{ route('register.siswa') }}" class="font-semibold text-fuchsia-600 hover:text-fuchsia-500 transition-colors">
+                    Daftar di sini
+                </a>
+            </p>
+            <p class="text-sm text-gray-600 mt-2">
                 Sistem Informasi Manajemen Sarana Prasarana
                 <span class="block font-semibold text-indigo-600 mt-1">© 2026 SIMAS</span>
             </p>

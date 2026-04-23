@@ -84,7 +84,7 @@ class PermintaanPetugasController extends Controller
         // Data untuk filter kategori
         $kategoris = \App\Models\Kategori::all();
         
-        return view('petugas.permintaan.index', compact(
+        return view('admin.permintaan.index', compact(
             'peminjamans',
             'totalPending',
             'hariIni',
@@ -123,8 +123,8 @@ class PermintaanPetugasController extends Controller
             $peminjaman->tanggal_disetujui = now();
             $peminjaman->disetujui_oleh = Auth::id();
             
-            // Kurangi stok barang
-            $peminjaman->barang->decrement('jumlah', $peminjaman->jumlah);
+            // Catatan: Stok barang sudah dikurangi saat peminjaman dibuat
+            // Jangan kurangi lagi di sini untuk menghindari double deduction
             
             $peminjaman->save();
             
@@ -180,7 +180,7 @@ class PermintaanPetugasController extends Controller
                 $peminjaman->status = 'disetujui';
                 $peminjaman->tanggal_disetujui = now();
                 $peminjaman->disetujui_oleh = Auth::id();
-                $peminjaman->barang->decrement('jumlah', $peminjaman->jumlah);
+                // Catatan: Stok barang sudah dikurangi saat peminjaman dibuat
                 $peminjaman->save();
                 
                 $successCount++;

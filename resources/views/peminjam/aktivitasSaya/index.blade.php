@@ -745,10 +745,10 @@
             });
         }
 
-        // Detail modal
-        function showDetail(id) {
-            // Tampilkan loading
-            document.getElementById('detailContent').innerHTML = `
+        // Detail modal - DIPERBAIKI
+function showDetail(id) {
+    // Tampilkan loading
+    document.getElementById('detailContent').innerHTML = `
         <div class="text-center py-12">
             <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-fuchsia-600 border-t-transparent"></div>
             <p class="mt-4 text-gray-600">Memuat detail peminjaman...</p>
@@ -758,21 +758,27 @@
     detailModal.classList.remove('hidden');
     detailModal.style.display = 'flex';
     
-    // Fetch detail peminjaman via AJAX
-    fetch(`peminjam/aktivitasSaya/${id}`, {
+    // 🔥 PERBAIKAN: Gunakan URL yang benar
+    const url = `/peminjam/aktivitas-saya/${id}`;
+    console.log('Fetching URL:', url);
+    
+    fetch(url, {
         method: 'GET',
         headers: {
             'X-Requested-With': 'XMLHttpRequest',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
         }
     })
     .then(response => {
+        console.log('Response status:', response.status);
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
         return response.json();
     })
     .then(data => {
+        console.log('Response data:', data);
         if (data.success) {
             renderDetailPeminjaman(data.data);
         } else {
@@ -1023,18 +1029,6 @@ function renderDetailPeminjaman(pinjam) {
                 </h4>
                 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div>
-                        <p class="text-xs text-gray-500 mb-1">Dibuat oleh</p>
-                        <p class="font-semibold text-gray-900">${pinjam.user?.name || '-'}</p>
-                    </div>
-                    <div>
-                        <p class="text-xs text-gray-500 mb-1">Role</p>
-                        <p class="font-semibold text-gray-900 capitalize">${pinjam.user?.role || '-'}</p>
-                    </div>
-                    <div>
-                        <p class="text-xs text-gray-500 mb-1">Diupdate pada</p>
-                        <p class="font-semibold text-gray-900">${formatDateTime(pinjam.updated_at)}</p>
-                    </div>
                     ${pinjam.denda > 0 ? `
                     <div class="bg-red-50 p-3 rounded-lg">
                         <p class="text-xs text-red-600 mb-1">Denda</p>
@@ -1045,11 +1039,11 @@ function renderDetailPeminjaman(pinjam) {
             </div>
 
             <!-- Catatan (jika ada) -->
-            ${pinjam.catatan ? `
+            ${pinjam.alasan ? `
             <div class="border-t border-gray-200 pt-6">
-                <h4 class="font-bold text-gray-900 mb-2">Catatan</h4>
+                <h4 class="font-bold text-gray-900 mb-2">Alasan</h4>
                 <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
-                    <p class="text-sm text-gray-700">${pinjam.catatan}</p>
+                    <p class="text-sm text-gray-700">${pinjam.alasan}</p>
                 </div>
             </div>
             ` : ''}

@@ -106,43 +106,46 @@ class PenggunaAdminController extends Controller
     }
 
     public function store(Request $request) {
-        // 1. Validasi Dasar
-        $rules = [
-            'name' => 'required|string|max:255',
-            'role' => 'required|in:petugas,siswa',
-            'password' => 'required|string|min:6',
-        ];
+    // 1. Validasi dasar untuk semua role
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'role' => 'required|in:petugas,siswa',
+        'password' => 'required|string|min:8',
+    ]);
 
-        // 2. Validasi Khusus Berdasarkan Role
-        if ($request->role === 'siswa') {
-            $rules['nisn'] = 'required|string|unique:users,nisn';
-            $rules['kelas'] = 'required|string';
-        } else {
-            $rules['email'] = 'required|email|unique:users,email';
-        }
-
-        $validated = $request->validate($rules);
-
-        // 3. Generate Email Dummy untuk Siswa
-        if ($request->role === 'siswa') {
-            $validated['email'] = $request->nisn . '@siswa.sekolah';
-            $validated['nisn'] = $request->nisn;
-            $validated['kelas'] = $request->kelas;
-        } else {
-            $validated['email'] = $request->email;
-            $validated['nisn'] = null;
-            $validated['kelas'] = null;
-        }
-
-        // 4. Set default status dan hash password
-        $validated['status'] = 'aktif';
-        $validated['password'] = Hash::make($request->password);
-
-        // 5. Simpan
-        User::create($validated);
-
-        return redirect()->route('admin.pengguna.index')->with('success', 'Pengguna berhasil ditambahkan.');
+    // 2. Validasi tambahan & penggabungan data
+    if ($request->role == 'siswa') {
+    $siswaData = $request->validate([
+        'nisn' => 'required|string|unique:users,nisn',
+        'kelas' => 'required|string|max:255',
+        'email' => 'nullable|email|unique:users,email',
+    ]);
+    
+    // Jika email kosong, buatkan email otomatis berbasis NISN
+    if (empty($siswaData['email'])) {
+        $siswaData['email'] = $siswaData['nisn'] . '@siswa.com';
     }
+    
+    $validated = array_merge($validated, $siswaData);
+
+    } else {
+        $petugasData = $request->validate([
+            'email' => 'required|email|unique:users,email',
+        ]);
+        $validated = array_merge($validated, $petugasData);
+        $validated['nisn'] = null;
+        $validated['kelas'] = null;
+    }
+
+    // 3. Set default status dan hash password
+    $validated['status'] = 'aktif';
+    $validated['password'] = Hash::make($request->password);
+
+    // 4. Simpan ke database
+    User::create($validated);
+
+    return redirect()->route('admin.pengguna.index')->with('success', 'Pengguna berhasil ditambahkan.');
+}
 
     public function destroy($id) {
         $user = User::findOrFail($id);
@@ -151,20 +154,20 @@ class PenggunaAdminController extends Controller
     }
     
     public function update(Request $request, $id) {
-        $user = User::findOrFail($id);
+    $user = User::findOrFail($id);
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'nisn' => 'nullable|string|unique:users,nisn,' . $user->id,
-            'kelas' => 'nullable|string|max:255',
-            'role' => 'required|in:petugas,siswa',
-        ]);
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'role' => 'required|in:petugas,siswa',
+        // Tambahkan validasi khusus jika dia siswa
+        'nisn' => $request->role == 'siswa' ? 'required|string|unique:users,nisn,' . $user->id : 'nullable',
+        'kelas' => $request->role == 'siswa' ? 'required|string|max:255' : 'nullable',
+    ]);
 
-        $user->update($validated);
+    $user->update($validated);
 
-        return redirect()->route('admin.pengguna.index')->with('success', 'Pengguna berhasil diperbarui.');
-    }
+    return redirect()->route('admin.pengguna.index')->with('success', 'Pengguna berhasil diperbarui.');
+}
 
     public function edit($id) {
         $user = User::findOrFail($id);

@@ -15,6 +15,7 @@ class Barang extends Model
         'deskripsi',
         'kategori_id',
         'jumlah',
+        'stok_tersedia',
         'gambar',
     ];
 

@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardAdminController;
+use App\Http\Controllers\Admin\PeminjamanAdminController;
 use App\Http\Controllers\Peminjam\BerandaPeminjamController;
 use App\Http\Controllers\Peminjam\AktivitasPeminjamController;
 use App\Http\Controllers\Petugas\DashboardPetugasController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\Admin\PengaturanAdminController;
 use App\Http\Controllers\Petugas\PengembalianPetugasController;
 use App\Http\Controllers\Petugas\PermintaanPetugasController;
 use App\Http\Controllers\Petugas\LaporanPetugasController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -50,7 +52,7 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->name('admin.')->grou
     Route::get('/barang/create', [BarangAdminController::class, 'create'])->name('barang.create');
     Route::post('/barang', [BarangAdminController::class, 'store'])->name('barang.store');
     Route::get('/barang/{id}/edit', [BarangAdminController::class, 'edit'])->name('barang.edit');
-    Route::post('/barang/{id}', [BarangAdminController::class, 'update'])->name('barang.update');
+    Route::put('/barang/{id}', [BarangAdminController::class, 'update'])->name('barang.update');
     Route::delete('/barang/{id}', [BarangAdminController::class, 'destroy'])->name('barang.destroy');
     
     // ===== KATEGORI =====
@@ -58,6 +60,25 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->name('admin.')->grou
     Route::post('/kategori', [KategoriAdminController::class, 'store'])->name('kategori.store');
     Route::post('/kategori/{id}', [KategoriAdminController::class, 'update'])->name('kategori.update');
     Route::delete('/kategori/{id}', [KategoriAdminController::class, 'destroy'])->name('kategori.destroy');
+
+        // PENGEMBALIAN
+    Route::get('/pengembalian', [PengembalianPetugasController::class, 'index'])->name('pengembalian.index');
+    Route::get('/pengembalian/{id}', [PengembalianPetugasController::class, 'show'])->name('pengembalian.show');
+    Route::post('/pengembalian/{id}/return', [PengembalianPetugasController::class, 'return'])->name('pengembalian.return');
+    Route::post('/pengembalian/scan', [PengembalianPetugasController::class, 'scan'])->name('pengembalian.scan');
+    Route::post('/pengembalian/{id}/reminder', [PengembalianPetugasController::class, 'sendReminder'])->name('pengembalian.reminder');
+
+        // PERMINTAAN PEMINJAMAN
+    Route::get('/permintaan', [PermintaanPetugasController::class, 'index'])->name('permintaan.index');
+    Route::get('/permintaan/{id}', [PermintaanPetugasController::class, 'show'])->name('permintaan.show');
+    Route::post('/permintaan/{id}/approve', [PermintaanPetugasController::class, 'approve'])->name('permintaan.approve');
+    Route::post('/permintaan/approve-selected', [PermintaanPetugasController::class, 'approveSelected'])->name('permintaan.approve-selected');
+    Route::post('/permintaan/{id}/reject', [PermintaanPetugasController::class, 'reject'])->name('permintaan.reject');
+    Route::post('/permintaan/reject-selected', [PermintaanPetugasController::class, 'rejectSelected'])->name('permintaan.reject-selected');
+
+    // ===== PEMINJAMAN =====
+    Route::get('/peminjaman', [PeminjamanAdminController::class, 'index'])->name('peminjaman.index');
+    Route::post('/peminjaman', [PeminjamanAdminController::class, 'store'])->name('peminjaman.store');
     
 // ===== PENGGUNA =====
 Route::get('/pengguna', [PenggunaAdminController::class, 'index'])->name('pengguna.index');
@@ -78,6 +99,7 @@ Route::get('/pengguna/template/download', [PenggunaAdminController::class, 'down
     // ===== RIWAYAT =====
     Route::get('/riwayat', [RiwayatAdminController::class, 'index'])->name('riwayat.index');
     Route::get('/riwayat/{id}', [RiwayatAdminController::class, 'show'])->name('riwayat.show');
+    Route::get('/riwayat/export', [RiwayatAdminController::class, 'export'])->name('riwayat.export');
     
     // ===== PENGATURAN =====
     Route::get('/pengaturan', [PengaturanAdminController::class, 'index'])->name('pengaturan.index');
@@ -90,20 +112,6 @@ Route::prefix('petugas')->middleware(['auth', 'role:petugas,admin'])->name('petu
     // Dashboard
     Route::get('/dashboard', [DashboardPetugasController::class, 'index'])->name('dashboard');
 
-    // PERMINTAAN PEMINJAMAN
-    Route::get('/permintaan', [PermintaanPetugasController::class, 'index'])->name('permintaan.index');
-    Route::get('/permintaan/{id}', [PermintaanPetugasController::class, 'show'])->name('permintaan.show');
-    Route::post('/permintaan/{id}/approve', [PermintaanPetugasController::class, 'approve'])->name('permintaan.approve');
-    Route::post('/permintaan/approve-selected', [PermintaanPetugasController::class, 'approveSelected'])->name('permintaan.approve-selected');
-    Route::post('/permintaan/{id}/reject', [PermintaanPetugasController::class, 'reject'])->name('permintaan.reject');
-    Route::post('/permintaan/reject-selected', [PermintaanPetugasController::class, 'rejectSelected'])->name('permintaan.reject-selected');
-    
-    // PENGEMBALIAN
-    Route::get('/pengembalian', [PengembalianPetugasController::class, 'index'])->name('pengembalian.index');
-    Route::get('/pengembalian/{id}', [PengembalianPetugasController::class, 'show'])->name('pengembalian.show');
-    Route::post('/pengembalian/{id}/return', [PengembalianPetugasController::class, 'return'])->name('pengembalian.return');
-    Route::post('/pengembalian/scan', [PengembalianPetugasController::class, 'scan'])->name('pengembalian.scan');
-    Route::post('/pengembalian/{id}/reminder', [PengembalianPetugasController::class, 'sendReminder'])->name('pengembalian.reminder');
     
     // Laporan
     Route::get('/laporan', [LaporanPetugasController::class, 'index'])->name('laporan.index');
@@ -132,6 +140,8 @@ Route::prefix('peminjam')->middleware(['auth', 'role:siswa'])->group(function ()
     // Halaman Aktivitas Saya
     Route::get('/aktivitasSaya', [AktivitasPeminjamController::class, 'index'])->name('peminjam.aktivitasSaya');
     Route::get('/aktivitasSaya/{id}', [AktivitasPeminjamController::class, 'show'])->name('peminjam.aktivitasSaya.show');
+    // 🔥 TAMBAHKAN ROUTE INI - untuk detail AJAX
+    Route::get('/aktivitas-saya/{id}', [AktivitasPeminjamController::class, 'show'])->name('aktivitasSaya.show');
 
     // Notifikasi peminjam
     Route::get('/notifications', [\App\Http\Controllers\Peminjam\NotificationController::class, 'index'])
@@ -143,5 +153,9 @@ Route::prefix('peminjam')->middleware(['auth', 'role:siswa'])->group(function ()
 
     // Tambahkan route peminjam lainnya di sini
 });
+
+// Route untuk registrasi siswa
+Route::get('/register/siswa', [RegisteredUserController::class, 'createSiswa'])->name('register.siswa');
+Route::post('/register/siswa', [RegisteredUserController::class, 'storeSiswa']);
 
 require __DIR__.'/auth.php';

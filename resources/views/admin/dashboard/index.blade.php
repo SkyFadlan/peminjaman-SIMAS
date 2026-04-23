@@ -50,28 +50,12 @@
 
                         <!-- Right Side Actions -->
                         <div class="flex items-center space-x-3">
-                            <!-- Search Button -->
-                            <button onclick="window.location.href='{{ route('admin.barang.index') }}'" class="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors" title="Cari Barang">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                                </svg>
-                            </button>
-
-                            <!-- Notification -->
-                            <button class="relative p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-                                </svg>
-                                @if($pemesanan > 0)
-                                    <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-                                @endif
-                            </button>
 
                             <!-- Profile Dropdown -->
                             <div class="flex items-center space-x-3 pl-3 border-l border-gray-200">
                                 <div class="hidden sm:block text-right">
                                     <p class="text-sm font-semibold text-gray-900">{{ Auth::user()->name ?? 'Admin User' }}</p>
-                                    <p class="text-xs text-gray-500">Administrator</p>
+                                    <p class="text-xs text-gray-500">Admin</p>
                                 </div>
                                 <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center text-white font-semibold uppercase">
                                     {{ substr(Auth::user()->name ?? 'A', 0, 1) }}
@@ -114,11 +98,6 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                                 </svg>
                             </div>
-                            @if($pemesananPersentase != 0)
-                                <span class="text-xs font-semibold {{ $pemesananPersentase > 0 ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50' }} px-2.5 py-1 rounded-full">
-                                    {{ $pemesananPersentase > 0 ? '+' : '' }}{{ $pemesananPersentase }}%
-                                </span>
-                            @endif
                         </div>
                         <h3 class="text-gray-600 text-sm font-medium mb-1">Permintaan</h3>
                         <p class="text-3xl font-bold text-gray-900">{{ $pemesanan }}</p>
@@ -133,11 +112,6 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                             </div>
-                            @if($dipinjamPersentase != 0)
-                                <span class="text-xs font-semibold {{ $dipinjamPersentase > 0 ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50' }} px-2.5 py-1 rounded-full">
-                                    {{ $dipinjamPersentase > 0 ? '+' : '' }}{{ $dipinjamPersentase }}%
-                                </span>
-                            @endif
                         </div>
                         <h3 class="text-gray-600 text-sm font-medium mb-1">Dipinjam</h3>
                         <p class="text-3xl font-bold text-gray-900">{{ $dipinjam }}</p>
@@ -186,27 +160,16 @@
                 <!-- Quick Stats Row - SUDAH DIPERBAIKI (TIDAK ADA PERHITUNGAN DI VIEW) -->
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                     <div class="bg-gradient-to-r from-blue-500 to-cyan-400 rounded-xl p-4 text-white">
-                        <p class="text-xs text-blue-100">Total Pengguna</p>
-                        <p class="text-2xl font-bold">{{ $totalPengguna }}</p>
+                        <p class="text-xs text-blue-100">Total Siswa</p>
+                        <p class="text-2xl font-bold">{{ $totalSiswa }}</p>
                         <div class="flex justify-between mt-2 text-xs">
-                            <span>Siswa: {{ $totalSiswa }}</span>
-                            <span>Petugas: {{ $totalPetugas }}</span>
+                            <span>Siswa yang sudah terdaftar</span>
                         </div>
                     </div>
                     <div class="bg-white rounded-xl p-4 border border-gray-100">
                         <p class="text-xs text-gray-500">Total Pemesanan</p>
                         <p class="text-2xl font-bold text-gray-900">{{ $totalPemesanan }}</p>
                         <p class="text-xs text-gray-400 mt-2">Menunggu approval</p>
-                    </div>
-                    <div class="bg-white rounded-xl p-4 border border-gray-100">
-                        <p class="text-xs text-gray-500">Rata-rata per Hari</p>
-                        <p class="text-2xl font-bold text-gray-900">{{ $rataPerHari }}</p>
-                        <p class="text-xs text-gray-400 mt-2">Transaksi/hari</p>
-                    </div>
-                    <div class="bg-white rounded-xl p-4 border border-gray-100">
-                        <p class="text-xs text-gray-500">Stok Menipis</p>
-                        <p class="text-2xl font-bold text-gray-900">{{ $stokMenipis }}</p>
-                        <p class="text-xs text-gray-400 mt-2">Item perlu restok</p>
                     </div>
                 </div>
 
@@ -273,13 +236,6 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                 </svg>
                             </a>
-                            <button onclick="backupData()" 
-                                    class="w-full p-4 bg-gray-50 text-gray-700 rounded-lg font-semibold hover:bg-gray-100 transition-colors flex items-center justify-between group">
-                                <span>Backup Data</span>
-                                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-                                </svg>
-                            </button>
                         </div>
 
                         <!-- System Status -->
@@ -292,17 +248,6 @@
                                         <span class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
                                         Online
                                     </span>
-                                </div>
-                                <div class="flex items-center justify-between text-sm">
-                                    <span class="text-gray-600">Database</span>
-                                    <span class="flex items-center text-green-600 font-medium">
-                                        <span class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
-                                        Healthy
-                                    </span>
-                                </div>
-                                <div class="flex items-center justify-between text-sm">
-                                    <span class="text-gray-600">Backup</span>
-                                    <span class="text-gray-600 font-medium">{{ Carbon\Carbon::today()->diffForHumans() }} lalu</span>
                                 </div>
                                 <div class="flex items-center justify-between text-sm">
                                     <span class="text-gray-600">Last Login</span>

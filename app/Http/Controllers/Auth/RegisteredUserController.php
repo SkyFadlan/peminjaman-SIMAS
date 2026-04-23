@@ -15,30 +15,36 @@ use Illuminate\View\View;
 class RegisteredUserController extends Controller
 {
     /**
-     * Display the registration view.
+     * Display the registration view for siswa.
      */
-    public function create(): View
+    public function createSiswa(): View
     {
         return view('auth.register');
     }
 
     /**
-     * Handle an incoming registration request.
+     * Handle an incoming registration request for siswa.
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function storeSiswa(Request $request): RedirectResponse
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'nisn' => ['required', 'string', 'max:20', 'unique:users,nisn'],
+            'kelas' => ['required', 'string', 'max:50'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
             'name' => $request->name,
+            'nisn' => $request->nisn,
+            'kelas' => $request->kelas,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => 'siswa',
+            'status' => 'aktif',
         ]);
 
         event(new Registered($user));
