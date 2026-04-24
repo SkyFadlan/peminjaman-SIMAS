@@ -88,90 +88,107 @@
                     </div>
                 </div>
 
-                <!-- Stats Cards -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    <!-- Card 1: Pemesanan -->
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all hover-scale">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                                </svg>
-                            </div>
-                        </div>
-                        <h3 class="text-gray-600 text-sm font-medium mb-1">Permintaan</h3>
-                        <p class="text-3xl font-bold text-gray-900">{{ $pemesanan }}</p>
-                        <p class="text-xs text-gray-500 mt-2">Menunggu persetujuan</p>
-                    </div>
+                <<!-- Stats Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <!-- Card 1: Pemesanan -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all hover-scale">
+        <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                </svg>
+            </div>
+        </div>
+        <h3 class="text-gray-600 text-sm font-medium mb-1">Permintaan</h3>
+        <p class="text-3xl font-bold text-gray-900">{{ $pemesanan }}</p>
+        <p class="text-xs text-gray-500 mt-2">Menunggu persetujuan</p>
+    </div>
 
-                    <!-- Card 2: Dipinjam -->
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all hover-scale">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                            </div>
-                        </div>
-                        <h3 class="text-gray-600 text-sm font-medium mb-1">Dipinjam</h3>
-                        <p class="text-3xl font-bold text-gray-900">{{ $dipinjam }}</p>
-                        <p class="text-xs text-gray-500 mt-2">Sedang dipinjam</p>
-                    </div>
+    <!-- Card 2: Dipinjam -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all hover-scale">
+        <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+        </div>
+        <h3 class="text-gray-600 text-sm font-medium mb-1">Dipinjam</h3>
+        <p class="text-3xl font-bold text-gray-900">{{ $dipinjam }}</p>
+        <p class="text-xs text-gray-500 mt-2">Sedang dipinjam</p>
+    </div>
 
-                    <!-- Card 3: Terlambat -->
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all hover-scale">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                                <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                            </div>
-                            @if($terlambatPersentase != 0)
-                                <span class="text-xs font-semibold {{ $terlambatPersentase > 0 ? 'text-red-600 bg-red-50' : 'text-green-600 bg-green-50' }} px-2.5 py-1 rounded-full">
-                                    {{ $terlambatPersentase > 0 ? '+' : '' }}{{ $terlambatPersentase }}%
-                                </span>
-                            @endif
-                        </div>
-                        <h3 class="text-gray-600 text-sm font-medium mb-1">Terlambat</h3>
-                        <p class="text-3xl font-bold text-gray-900">{{ $terlambat }}</p>
-                        <p class="text-xs text-gray-500 mt-2">Perlu tindak lanjut</p>
-                    </div>
+    <!-- Card 3: Terlambat -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all hover-scale">
+        <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+            @if($terlambatPersentase != 0)
+                <span class="text-xs font-semibold {{ $terlambatPersentase > 0 ? 'text-red-600 bg-red-50' : 'text-green-600 bg-green-50' }} px-2.5 py-1 rounded-full">
+                    {{ $terlambatPersentase > 0 ? '+' : '' }}{{ $terlambatPersentase }}%
+                </span>
+            @endif
+        </div>
+        <h3 class="text-gray-600 text-sm font-medium mb-1">Terlambat</h3>
+        <p class="text-3xl font-bold text-gray-900">{{ $terlambat }}</p>
+        <p class="text-xs text-gray-500 mt-2">Perlu tindak lanjut</p>
+    </div>
 
-                    <!-- Card 4: Total Aset -->
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all hover-scale">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center">
-                                <svg class="w-6 h-6 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-                                </svg>
-                            </div>
-                            @if($asetPersentase != 0)
-                                <span class="text-xs font-semibold {{ $asetPersentase > 0 ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50' }} px-2.5 py-1 rounded-full">
-                                    {{ $asetPersentase > 0 ? '+' : '' }}{{ $asetPersentase }}%
-                                </span>
-                            @endif
-                        </div>
-                        <h3 class="text-gray-600 text-sm font-medium mb-1">Total Aset</h3>
-                        <p class="text-3xl font-bold text-gray-900">{{ $totalAset }}</p>
-                        <p class="text-xs text-gray-500 mt-2">Item terdaftar</p>
-                    </div>
-                </div>
+    <!-- Card 4: Total Aset -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all hover-scale">
+        <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                </svg>
+            </div>
+            @if($asetPersentase != 0)
+                <span class="text-xs font-semibold {{ $asetPersentase > 0 ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50' }} px-2.5 py-1 rounded-full">
+                    {{ $asetPersentase > 0 ? '+' : '' }}{{ $asetPersentase }}%
+                </span>
+            @endif
+        </div>
+        <h3 class="text-gray-600 text-sm font-medium mb-1">Total Aset</h3>
+        <p class="text-3xl font-bold text-gray-900">{{ $totalAset }}</p>
+        <p class="text-xs text-gray-500 mt-2">Item terdaftar</p>
+    </div>
+</div>
 
-                <!-- Quick Stats Row - SUDAH DIPERBAIKI (TIDAK ADA PERHITUNGAN DI VIEW) -->
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                    <div class="bg-gradient-to-r from-blue-500 to-cyan-400 rounded-xl p-4 text-white">
-                        <p class="text-xs text-blue-100">Total Siswa</p>
-                        <p class="text-2xl font-bold">{{ $totalSiswa }}</p>
-                        <div class="flex justify-between mt-2 text-xs">
-                            <span>Siswa yang sudah terdaftar</span>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-xl p-4 border border-gray-100">
-                        <p class="text-xs text-gray-500">Total Pemesanan</p>
-                        <p class="text-2xl font-bold text-gray-900">{{ $totalPemesanan }}</p>
-                        <p class="text-xs text-gray-400 mt-2">Menunggu approval</p>
-                    </div>
-                </div>
+                <!-- Quick Stats Row -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+    <div class="bg-gradient-to-r from-blue-500 to-cyan-400 rounded-xl p-4 text-white">
+        <p class="text-xs text-blue-100">Total Siswa</p>
+        <p class="text-2xl font-bold">{{ $totalSiswa }}</p>
+        <div class="flex justify-between mt-2 text-xs">
+            <span>Siswa yang sudah terdaftar</span>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-xl p-4 border border-gray-100">
+        <p class="text-xs text-gray-500">Total Pemesanan</p>
+        <p class="text-2xl font-bold text-gray-900">{{ $totalPemesanan }}</p>
+        <p class="text-xs text-gray-400 mt-2">Menunggu approval</p>
+    </div>
+
+    <!-- CARD TOTAL DENDA - UKURAN KECIL -->
+    <div class="bg-gradient-to-r from-orange-500 to-red-500 rounded-xl p-4 text-white">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-xs text-orange-100">Total Denda</p>
+                <p class="text-2xl font-bold">Rp {{ number_format($totalDenda, 0, ',', '.') }}</p>
+            </div>
+            <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+        </div>
+        <p class="text-xs text-orange-100 mt-2">Dari pengembalian barang</p>
+    </div>
+</div>
 
                 <!-- Charts & Tables Row -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">

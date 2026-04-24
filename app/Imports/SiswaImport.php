@@ -19,34 +19,71 @@ class SiswaImport implements ToModel, WithHeadingRow, WithValidation, WithBatchI
     private $failures = [];
     private $rowNumber = 1;
     
-    /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
     public function model(array $row)
     {
         $this->rowNumber++;
         
-        // Cek apakah NISN sudah ada
-        $existingUser = User::where('nisn', $row['nisn'])->first();
+        // Ambil nilai dengan aman menggunakan array_key_exists
+        $nisn = isset($row['nisn']) ? (string) trim($row['nisn']) : '';
+        $namaLengkap = isset($row['nama_lengkap']) ? trim($row['nama_lengkap']) : (isset($row['nama']) ? trim($row['nama']) : '');
+        $kelas = isset($row['kelas']) ? trim($row['kelas']) : '';
         
-        if ($existingUser) {
+        // Email opsional - jika tidak diisi, buat dari NISN
+        $email = '';
+        if (isset($row['email']) && !empty(trim($row['email']))) {
+            $email = trim($row['email']);
+        } else {
+            $email = $nisn . '@siswa.sch.id';
+        }
+        
+        // Password opsional - jika tidak diisi, default 'siswa123'
+        $password = (isset($row['password']) && !empty(trim($row['password']))) ? trim($row['password']) : 'siswa123';
+        
+        // Validasi dasar
+        if (empty($nisn)) {
             $this->failures[] = [
                 'row' => $this->rowNumber,
-                'errors' => ['NISN ' . $row['nisn'] . ' sudah terdaftar']
+                'errors' => ['NISN tidak boleh kosong'],
+                'values' => $row
             ];
             return null;
         }
         
-        // Cek apakah email sudah ada
-        $email = $row['email'] ?? $row['nisn'] . '@siswa.sch.id';
+        if (empty($namaLengkap)) {
+            $this->failures[] = [
+                'row' => $this->rowNumber,
+                'errors' => ['Nama lengkap tidak boleh kosong'],
+                'values' => $row
+            ];
+            return null;
+        }
         
-        // Cek email duplicate
+        if (empty($kelas)) {
+            $this->failures[] = [
+                'row' => $this->rowNumber,
+                'errors' => ['Kelas tidak boleh kosong'],
+                'values' => $row
+            ];
+            return null;
+        }
+        
+        // Cek apakah NISN sudah ada (ini yang utama untuk login)
+        $existingUser = User::where('nisn', $nisn)->first();
+        if ($existingUser) {
+            $this->failures[] = [
+                'row' => $this->rowNumber,
+                'errors' => ['NISN ' . $nisn . ' sudah terdaftar'],
+                'values' => $row
+            ];
+            return null;
+        }
+        
+        // Cek email duplicate (opsional, hanya jika email sudah ada di database)
         if (User::where('email', $email)->exists()) {
             $this->failures[] = [
                 'row' => $this->rowNumber,
-                'errors' => ['Email ' . $email . ' sudah terdaftar']
+                'errors' => ['Email ' . $email . ' sudah terdaftar'],
+                'values' => $row
             ];
             return null;
         }
@@ -54,23 +91,20 @@ class SiswaImport implements ToModel, WithHeadingRow, WithValidation, WithBatchI
         $this->successCount++;
         
         return new User([
-            'name' => $row['nama_lengkap'],
-            'nisn' => (string) $row['nisn'],
+            'name' => $namaLengkap,
+            'nisn' => $nisn,
             'email' => $email,
-            'kelas' => $row['kelas'],
+            'kelas' => $kelas,
             'role' => 'siswa',
-            'password' => Hash::make($row['password'] ?? 'siswa123'),
+            'password' => Hash::make($password),
             'status' => 'aktif',
         ]);
     }
     
-    /**
-     * @return array
-     */
     public function rules(): array
     {
         return [
-            'nisn' => 'required|numeric|digits_between:8,12',
+            'nisn' => 'required',
             'nama_lengkap' => 'required|string|max:255',
             'kelas' => 'required|string|max:50',
             'email' => 'nullable|email',
@@ -78,15 +112,10 @@ class SiswaImport implements ToModel, WithHeadingRow, WithValidation, WithBatchI
         ];
     }
     
-    /**
-     * @return array
-     */
     public function customValidationMessages()
     {
         return [
             'nisn.required' => 'NISN wajib diisi',
-            'nisn.numeric' => 'NISN harus berupa angka',
-            'nisn.digits_between' => 'NISN harus antara 8-12 digit',
             'nama_lengkap.required' => 'Nama lengkap wajib diisi',
             'kelas.required' => 'Kelas wajib diisi',
         ];

@@ -68,7 +68,24 @@
                                     <div>
                                         <p class="font-semibold text-gray-900">Isi Data di Excel</p>
                                         <p class="text-sm text-gray-600">Isi data siswa sesuai format template. Kolom bertanda (*) wajib diisi.</p>
-                                        <div class="mt-2 bg-gray-50 rounded-lg p-3 text-xs">
+                                        
+                                        <!-- Informasi Login dengan NISN -->
+                                        <div class="mt-3 bg-green-50 border border-green-200 rounded-lg p-3">
+                                            <div class="flex items-center text-green-800 mb-2">
+                                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                </svg>
+                                                <span class="font-semibold">Cara Login Siswa</span>
+                                            </div>
+                                            <p class="text-sm text-green-800">
+                                                Siswa login menggunakan <strong class="font-bold">NISN</strong> sebagai username.
+                                            </p>
+                                            <p class="text-sm text-green-800 mt-1">
+                                                Password default: <code class="bg-green-100 px-2 py-0.5 rounded font-mono font-bold">siswa123</code>
+                                            </p>
+                                        </div>
+                                        
+                                        <div class="mt-3 bg-gray-50 rounded-lg p-3 text-xs">
                                             <table class="min-w-full">
                                                 <thead>
                                                     <tr class="border-b border-gray-200">
@@ -78,11 +95,31 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr><td class="py-1 px-2">NISN (*)</td><td class="py-1 px-2">Nomor Induk Siswa Nasional</td><td class="py-1 px-2">12345678</td></tr>
-                                                    <tr><td class="py-1 px-2">Nama Lengkap (*)</td><td class="py-1 px-2">Nama lengkap siswa</td><td class="py-1 px-2">Ahmad Fauzi</td></tr>
-                                                    <tr><td class="py-1 px-2">Kelas (*)</td><td class="py-1 px-2">Kelas siswa</td><td class="py-1 px-2">XII RPL 1</td></tr>
-                                                    <tr><td class="py-1 px-2">Email (Opsional)</td><td class="py-1 px-2">Email siswa</td><td class="py-1 px-2">ahmad@sch.id</td></tr>
-                                                    <tr><td class="py-1 px-2">Password (Opsional)</td><td class="py-1 px-2">Default: siswa123</td><td class="py-1 px-2">siswa123</td></tr>
+                                                    <tr class="border-b border-gray-100">
+                                                        <td class="py-1 px-2 font-mono font-bold">nisn (*)</td>
+                                                        <td class="py-1 px-2">Nomor Induk Siswa Nasional <span class="text-red-500">(digunakan untuk LOGIN)</span></td>
+                                                        <td class="py-1 px-2 font-mono">12345678</td>
+                                                    </tr>
+                                                    <tr class="border-b border-gray-100">
+                                                        <td class="py-1 px-2">nama_lengkap (*)</td>
+                                                        <td class="py-1 px-2">Nama lengkap siswa</td>
+                                                        <td class="py-1 px-2">Ahmad Fauzi</td>
+                                                    </tr>
+                                                    <tr class="border-b border-gray-100">
+                                                        <td class="py-1 px-2">kelas (*)</td>
+                                                        <td class="py-1 px-2">Kelas siswa</td>
+                                                        <td class="py-1 px-2">XII RPL 1</td>
+                                                    </tr>
+                                                    <tr class="border-b border-gray-100">
+                                                        <td class="py-1 px-2">email (Opsional)</td>
+                                                        <td class="py-1 px-2">Email siswa <span class="text-gray-500">(Kosongkan untuk otomatis: NISN@siswa.sch.id)</span></td>
+                                                        <td class="py-1 px-2">ahmad@sch.id</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="py-1 px-2">password (Opsional)</td>
+                                                        <td class="py-1 px-2">Password siswa <span class="text-gray-500">(Kosongkan untuk default: siswa123)</span></td>
+                                                        <td class="py-1 px-2">(kosong)</td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -112,6 +149,12 @@
                             @if(session('error'))
                                 <div class="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
                                     {{ session('error') }}
+                                </div>
+                            @endif
+                            
+                            @if(session('success'))
+                                <div class="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg text-green-700">
+                                    {{ session('success') }}
                                 </div>
                             @endif
                             
@@ -191,6 +234,25 @@
                             </div>
                         </div>
                     @endif
+
+                    <!-- Info Card untuk Admin -->
+                    <div class="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-4">
+                        <div class="flex items-start space-x-3">
+                            <svg class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div>
+                                <p class="text-sm font-semibold text-blue-800">Informasi Penting:</p>
+                                <ul class="text-sm text-blue-700 mt-1 space-y-1">
+                                    <li>• <strong>Login menggunakan NISN</strong> (bukan email)</li>
+                                    <li>• Password default: <code class="bg-blue-100 px-1.5 py-0.5 rounded">siswa123</code></li>
+                                    <li>• Email otomatis: <code class="bg-blue-100 px-1.5 py-0.5 rounded">NISN@siswa.sch.id</code> (jika dikosongkan)</li>
+                                    <li>• Pastikan kolom NISN tidak ada yang duplikat</li>
+                                    <li>• Header kolom harus menggunakan huruf kecil: <code class="bg-blue-100 px-1.5 py-0.5 rounded">nisn, nama_lengkap, kelas, email, password</code></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </main>
         </div>
@@ -207,36 +269,41 @@
         const fileInput = document.getElementById('fileInput');
         const fileName = document.getElementById('fileName');
 
-        dropZone.addEventListener('click', () => fileInput.click());
-        
-        dropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropZone.classList.add('drag-over');
-        });
-        
-        dropZone.addEventListener('dragleave', () => {
-            dropZone.classList.remove('drag-over');
-        });
-        
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropZone.classList.remove('drag-over');
-            const files = e.dataTransfer.files;
-            if (files.length) {
-                fileInput.files = files;
-                updateFileName(files[0].name);
-            }
-        });
-        
-        fileInput.addEventListener('change', () => {
-            if (fileInput.files.length) {
-                updateFileName(fileInput.files[0].name);
-            }
-        });
+        if (dropZone && fileInput) {
+            dropZone.addEventListener('click', () => fileInput.click());
+            
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('drag-over');
+            });
+            
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('drag-over');
+            });
+            
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('drag-over');
+                const files = e.dataTransfer.files;
+                if (files.length) {
+                    fileInput.files = files;
+                    updateFileName(files[0].name);
+                }
+            });
+            
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files.length) {
+                    updateFileName(fileInput.files[0].name);
+                }
+            });
+        }
         
         function updateFileName(name) {
-            fileName.textContent = `📄 ${name}`;
-            fileName.classList.remove('hidden');
+            const fileNameEl = document.getElementById('fileName');
+            if (fileNameEl) {
+                fileNameEl.textContent = `📄 ${name}`;
+                fileNameEl.classList.remove('hidden');
+            }
         }
     </script>
 </body>

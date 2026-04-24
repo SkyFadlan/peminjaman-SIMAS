@@ -105,6 +105,12 @@ class DashboardAdminController extends Controller
         
         $maxJumlah = max($statistikJumlah) > 0 ? max($statistikJumlah) : 1;
 
+         // ================ TOTAL DENDA DARI SEMUA PENGEMBALIAN ================
+        // Ambil semua denda dari peminjaman yang sudah dikembalikan dan memiliki denda > 0
+        $totalDenda = Peminjaman::where('status', 'dikembalikan')
+            ->where('denda', '>', 0)
+            ->sum('denda');
+
         // ================ ✅ DAFTAR TERLAMBAT - PERBAIKAN ================
         $daftarTerlambat = Peminjaman::with(['user', 'barang', 'barang.kategori'])
             ->whereIn('status', ['disetujui', 'dipinjam'])  // ✅ PERBAIKAN
@@ -231,7 +237,8 @@ class DashboardAdminController extends Controller
             'totalPetugas',
             'totalSiswa',
             'dikembalikanHariIni',
-            'disetujuiHariIni'
+            'disetujuiHariIni',
+            'totalDenda'
         ));
     }
 }

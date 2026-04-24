@@ -352,9 +352,11 @@
                                         </div>
                                     </div>
                                     <div class="flex flex-col space-y-2 lg:w-48">
-                                        <button onclick="openReturnModal({{ $pinjam->id }})" class="px-4 py-2.5 bg-gradient-to-r from-orange-600 to-amber-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-orange-300 transition-all text-sm">
-                                            Kembalikan Sekarang
-                                        </button>
+                                        @if($pinjam->status == 'disetujui')
+                                            <button onclick="showKodePeminjaman('{{ $pinjam->kode_peminjaman }}')" class="px-4 py-2.5 bg-gradient-to-r from-fuchsia-600 to-pink-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-fuchsia-300 transition-all text-sm">
+                                                Tampilkan Kode
+                                            </button>
+                                        @endif
                                         <button onclick="showDetail({{ $pinjam->id }})" class="px-4 py-2.5 bg-white border-2 border-gray-200 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all text-sm">
                                             Lihat Detail
                                         </button>
@@ -450,9 +452,11 @@
                                         </div>
                                     </div>
                                     <div class="flex flex-col space-y-2 lg:w-48">
-                                        <button onclick="openReturnModal({{ $pinjam->id }})" class="px-4 py-2.5 bg-gradient-to-r from-red-600 to-rose-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-red-300 transition-all text-sm">
-                                            Kembalikan Sekarang
-                                        </button>
+                                        @if($pinjam->status == 'disetujui')
+                                            <button onclick="showKodePeminjaman('{{ $pinjam->kode_peminjaman }}')" class="px-4 py-2.5 bg-gradient-to-r from-fuchsia-600 to-pink-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-fuchsia-300 transition-all text-sm">
+                                                Tampilkan Kode
+                                            </button>
+                                        @endif
                                         <button onclick="showDetail({{ $pinjam->id }})" class="px-4 py-2.5 bg-white border-2 border-gray-200 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all text-sm">
                                             Lihat Detail
                                         </button>

@@ -201,7 +201,7 @@
 
     <!-- Main Content -->
     <main>
-        <!-- Hero Section -->
+                <!-- Hero Section -->
         <div class="bg-gradient-to-r from-fuchsia-600 to-pink-500 rounded-2xl p-6 sm:p-8 mb-8 text-white shadow-xl shadow-fuchsia-200/50 fade-in">
             <div class="flex items-center justify-between">
                 <div class="flex-1">
@@ -218,8 +218,7 @@
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0114 0z"></path>
                             </svg>
-                            <span class="font-semibold text-sm sm:text-base">{{ $jatuhTempo ?? 0 }} Jatuh Tempo</span>
-                            <span class="inline-flex items-center rounded-full bg-red-100 text-red-700 px-2.5 py-1 text-xs font-semibold">{{ $terlambat ?? 0 }} Telat</span>
+                            <span class="font-semibold text-sm sm:text-base">{{ $jatuhTempo ?? 0 }} Terlambat</span>
                         </div>
                     </div>
                 </div>
@@ -227,6 +226,31 @@
                     <svg class="w-36 h-36 lg:w-48 lg:h-48 text-white/20" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
                     </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 🔥 FITUR PENCARIAN BUKU BARU 🔥 -->
+        <div class="mb-8">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
+                <div class="relative">
+                    <input type="text" 
+                           id="searchBuku" 
+                           placeholder="🔍 Cari buku berdasarkan judul, deskripsi, atau kode..." 
+                           class="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:border-transparent">
+                    <svg class="w-5 h-5 text-gray-400 absolute left-4 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    <button id="clearSearch" class="absolute right-3 top-3 p-1 text-gray-400 hover:text-gray-600 hidden">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex justify-between items-center mt-3 text-xs text-gray-500">
+                    <div class="flex items-center space-x-4">
+                        <span class="flex items-center"><span class="w-2 h-2 bg-fuchsia-500 rounded-full mr-1"></span> Pencarian berdasarkan judul</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -268,40 +292,6 @@
             </div>
         </div>
 
-        <!-- Filters & Sort -->
-        <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div class="flex flex-wrap items-center gap-2">
-                <select id="sortSelect" class="px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:border-transparent shadow-sm">
-                    <option value="latest">Urutkan: Terbaru</option>
-                    <option value="name_asc">Nama A-Z</option>
-                    <option value="name_desc">Nama Z-A</option>
-                    <option value="stock_desc">Stok Terbanyak</option>
-                </select>
-                <select id="stockFilter" class="px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:border-transparent shadow-sm">
-                    <option value="all">Semua Stok</option>
-                    <option value="available">Tersedia</option>
-                    <option value="low">Stok Sedikit</option>
-                    <option value="out">Habis</option>
-                </select>
-                <button id="clearFilters" class="p-2.5 bg-white border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-            </div>
-            <div class="flex items-center space-x-2">
-                <button onclick="changeView('grid')" id="gridViewBtn" class="p-2.5 bg-gradient-to-r from-fuchsia-600 to-pink-500 text-white rounded-lg shadow-lg shadow-fuchsia-200 transition-all">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
-                    </svg>
-                </button>
-                <button onclick="changeView('list')" id="listViewBtn" class="p-2.5 bg-white text-gray-600 rounded-lg hover:bg-gray-100 transition-colors shadow-sm">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-            </div>
-        </div>
 
         <!-- Item Grid - Ubah class grid -->
 <div id="itemGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5 lg:gap-6">
@@ -476,7 +466,7 @@
             applyFilters();
         }
 
-        // Apply all filters
+                // Apply all filters
         function applyFilters() {
             const items = document.querySelectorAll('.item-card');
             let visibleCount = 0;
@@ -484,19 +474,27 @@
             items.forEach(item => {
                 const category = item.getAttribute('data-category');
                 const stock = parseInt(item.getAttribute('data-stock'));
+                const name = item.getAttribute('data-name') || '';
                 
                 let visible = true;
                 
+                // Filter kategori
                 if (currentCategory !== 'all' && category !== currentCategory.toString()) {
                     visible = false;
                 }
                 
+                // Filter stok
                 if (currentStockFilter === 'available' && stock === 0) {
                     visible = false;
                 } else if (currentStockFilter === 'low' && (stock > 5 || stock === 0)) {
                     visible = false;
                 } else if (currentStockFilter === 'out' && stock > 0) {
                     visible = false;
+                }
+                
+                // Filter pencarian (jika ada)
+                if (visible && searchTerm.length > 0) {
+                    visible = name.includes(searchTerm);
                 }
                 
                 if (visible) {
@@ -508,6 +506,85 @@
             });
             
             document.getElementById('total-all').textContent = visibleCount;
+            if (searchTerm.length > 0) {
+                document.getElementById('searchResultCount').innerHTML = `${visibleCount} hasil dari "${searchTerm}"`;
+            } else {
+                document.getElementById('searchResultCount').innerHTML = `${visibleCount} buku ditemukan`;
+            }
+        }
+
+                // ================ FITUR PENCARIAN BUKU ================
+        let searchTerm = '';
+        
+        function searchBooks() {
+            searchTerm = document.getElementById('searchBuku').value.toLowerCase().trim();
+            const clearBtn = document.getElementById('clearSearch');
+            
+            // Tampilkan/sembunyikan tombol clear
+            if (searchTerm.length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+            
+            const items = document.querySelectorAll('.item-card');
+            let visibleCount = 0;
+            
+            items.forEach(item => {
+                const name = item.getAttribute('data-name') || '';
+                const category = item.getAttribute('data-category');
+                const stock = parseInt(item.getAttribute('data-stock'));
+                
+                // Cek apakah nama buku mengandung kata kunci pencarian
+                let matchesSearch = true;
+                if (searchTerm.length > 0) {
+                    matchesSearch = name.includes(searchTerm);
+                }
+                
+                // Filter kategori
+                let matchesCategory = true;
+                if (currentCategory !== 'all' && category !== currentCategory.toString()) {
+                    matchesCategory = false;
+                }
+                
+                // Filter stok
+                let matchesStock = true;
+                if (currentStockFilter === 'available' && stock === 0) {
+                    matchesStock = false;
+                } else if (currentStockFilter === 'low' && (stock > 5 || stock === 0)) {
+                    matchesStock = false;
+                } else if (currentStockFilter === 'out' && stock > 0) {
+                    matchesStock = false;
+                }
+                
+                const visible = matchesSearch && matchesCategory && matchesStock;
+                
+                if (visible) {
+                    item.style.display = '';
+                    visibleCount++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            
+            // Update jumlah hasil pencarian
+            document.getElementById('searchResultCount').innerHTML = `${visibleCount} buku ditemukan`;
+            if (searchTerm.length > 0) {
+                document.getElementById('searchResultCount').innerHTML = `${visibleCount} hasil dari "${searchTerm}"`;
+            } else {
+                document.getElementById('searchResultCount').innerHTML = `${visibleCount} buku ditemukan`;
+            }
+            
+            // Update total-all badge
+            document.getElementById('total-all').textContent = visibleCount;
+        }
+        
+        // Clear search
+        function clearSearch() {
+            document.getElementById('searchBuku').value = '';
+            searchTerm = '';
+            document.getElementById('clearSearch').classList.add('hidden');
+            searchBooks();
         }
 
         // Show all categories
@@ -1219,6 +1296,20 @@ function validateReturnTime() {
 // Tambahkan validasi jam kembali minimal 1 jam setelah jam ambil
 document.addEventListener('DOMContentLoaded', function() {
     // ... existing code ...
+
+    // 🔥 Event listener untuk pencarian
+            const searchInput = document.getElementById('searchBuku');
+            const clearSearchBtn = document.getElementById('clearSearch');
+            
+            if (searchInput) {
+                searchInput.addEventListener('keyup', function(e) {
+                    searchBooks();
+                });
+            }
+            
+            if (clearSearchBtn) {
+                clearSearchBtn.addEventListener('click', clearSearch);
+            }
     
     // Validasi untuk jam kembali
     const pickupTimeInput = document.getElementById('pickupTime');

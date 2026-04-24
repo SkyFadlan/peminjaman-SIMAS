@@ -28,6 +28,42 @@
             background: #e9d5ff;
             color: #6b21a8;
         }
+        
+        /* Modal styling - CENTERED */
+        .modal-notif {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            padding: 20px;
+        }
+        
+        .modal-notif-content {
+            background: white;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            margin: auto;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Dark mode support */
+        .dark .modal-notif-content {
+            background: #0f172a;
+            border: 1px solid #1e293b;
+        }
     </style>
 </head>
 <body>
@@ -63,7 +99,7 @@
                     @php
                         $isRead = !empty($notification->read_at);
                     @endphp
-                    <button type="button" onclick="showNotificationDetail(this)" data-id="{{ $notification->id }}" data-title="{{ e($notification->data['title'] ?? 'Pemberitahuan') }}" data-message="{{ e($notification->data['message'] ?? '') }}" class="notification-card w-full text-left rounded-3xl border px-6 py-5 shadow-sm transition-all {{ $isRead ? 'bg-white border-gray-200' : 'bg-purple-50 border-purple-200' }} hover:shadow-md">
+                    <button type="button" onclick="showNotificationDetailPage(this)" data-id="{{ $notification->id }}" data-title="{{ e($notification->data['title'] ?? 'Pemberitahuan') }}" data-message="{{ e($notification->data['message'] ?? '') }}" data-url="{{ e($notification->data['url'] ?? '#') }}" class="notification-card w-full text-left rounded-3xl border px-6 py-5 shadow-sm transition-all {{ $isRead ? 'bg-white border-gray-200' : 'bg-purple-50 border-purple-200' }} hover:shadow-md">
                         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                             <div>
                                 <p class="text-sm font-semibold text-gray-900">{{ $notification->data['title'] ?? 'Pemberitahuan' }}</p>
@@ -84,29 +120,34 @@
         </div>
     </main>
 
-    <div id="notificationDetailModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-        <div class="w-full max-w-2xl rounded-3xl bg-white dark:bg-slate-950 shadow-2xl border border-gray-200 dark:border-slate-800 overflow-hidden">
-            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-slate-800">
+    <!-- Modal Detail Notifikasi - PERFECT CENTERED -->
+    <div id="notificationDetailModalPage" class="modal-notif hidden">
+        <div class="modal-notif-content">
+            <div class="sticky top-0 bg-white dark:bg-slate-950 flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-slate-800 rounded-t-2xl">
                 <div>
-                    <h2 id="notificationModalTitle" class="text-xl font-semibold text-gray-900 dark:text-slate-100">Detail Notifikasi</h2>
-                    <p id="notificationModalSubtitle" class="text-sm text-gray-500 dark:text-gray-400 mt-1">Informasi lengkap mengenai pemberitahuan.</p>
+                    <h2 id="notificationModalTitlePage" class="text-xl font-semibold text-gray-900 dark:text-slate-100">Detail Notifikasi</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Informasi lengkap mengenai pemberitahuan.</p>
                 </div>
-                <button type="button" onclick="closeNotificationModal()" class="text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
-                    <span class="sr-only">Tutup</span>
+                <button type="button" onclick="closeNotificationModalPage()" class="text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
             </div>
             <div class="px-6 py-6 space-y-4">
-                <p id="notificationModalMessage" class="text-sm leading-relaxed text-gray-600 dark:text-gray-300"></p>
+                <p id="notificationModalMessagePage" class="text-sm leading-relaxed text-gray-600 dark:text-gray-300"></p>
                 <div class="rounded-2xl bg-purple-50 dark:bg-slate-900 border border-purple-100 dark:border-slate-800 p-4">
                     <p class="text-xs font-semibold uppercase tracking-[0.24em] text-purple-600 dark:text-purple-300">Status</p>
-                    <p id="notificationModalStatus" class="mt-2 text-sm text-gray-700 dark:text-gray-200">Belum dibaca</p>
+                    <p id="notificationModalStatusPage" class="mt-2 text-sm text-gray-700 dark:text-gray-200">Belum dibaca</p>
                 </div>
-            </div>
-            <div class="px-6 py-4 bg-gray-50 dark:bg-slate-900 flex justify-end gap-3">
-                <button type="button" onclick="closeNotificationModal()" class="inline-flex items-center justify-center rounded-3xl border border-gray-200 bg-white px-5 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-100 transition-all dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100 dark:hover:bg-slate-900">Tutup</button>
+                <div class="flex gap-3">
+                    <button id="notificationModalOpenButtonPage" onclick="openNotificationUrlPage()" data-url="#" style="display:none" class="flex-1 inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-purple-600 to-pink-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-purple-200 hover:from-purple-700 hover:to-pink-600 transition-all">
+                        Buka Halaman
+                    </button>
+                    <button type="button" onclick="closeNotificationModalPage()" class="flex-1 inline-flex items-center justify-center rounded-2xl border border-gray-200 bg-white px-5 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-100 transition-all dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100 dark:hover:bg-slate-900">
+                        Tutup
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -114,44 +155,76 @@
     <script>
         const notificationPageCsrfToken = '{{ csrf_token() }}';
 
-        function showNotificationDetail(button) {
-            const notificationId = button.dataset.id;
-            const notificationTitle = button.dataset.title || 'Pemberitahuan';
-            const notificationMessage = button.dataset.message || 'Tidak ada detail tambahan.';
+        function showNotificationDetailPage(button) {
+            const notifId = button.dataset.id;
+            const notifUrl = button.dataset.url || '#';
+            const notifTitle = button.dataset.title || 'Pemberitahuan';
+            const notifMessage = button.dataset.message || 'Tidak ada detail.';
 
-            document.getElementById('notificationModalTitle').textContent = notificationTitle;
-            document.getElementById('notificationModalMessage').textContent = notificationMessage;
-            document.getElementById('notificationModalStatus').textContent = 'Sudah dibaca';
+            document.getElementById('notificationModalTitlePage').textContent = notifTitle;
+            document.getElementById('notificationModalMessagePage').innerHTML = notifMessage;
+            document.getElementById('notificationModalStatusPage').textContent = 'Belum dibaca';
 
-            if (notificationId) {
-                fetch(`/peminjam/notifications/${notificationId}/read`, {
+            const openBtn = document.getElementById('notificationModalOpenButtonPage');
+            openBtn.dataset.url = notifUrl;
+            openBtn.style.display = (notifUrl && notifUrl !== '#') ? 'flex' : 'none';
+
+            const modal = document.getElementById('notificationDetailModalPage');
+            modal.classList.remove('hidden');
+
+            if (notifId) {
+                fetch(`/peminjam/notifications/${notifId}/read`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': notificationPageCsrfToken,
-                        'Accept': 'application/json'
+                    headers: { 
+                        'Content-Type': 'application/json', 
+                        'X-CSRF-TOKEN': notificationPageCsrfToken, 
+                        'Accept': 'application/json' 
                     },
                     body: JSON.stringify({})
                 })
-                .then(response => response.json())
+                .then(r => r.json())
                 .then(data => {
                     if (data.success) {
+                        document.getElementById('notificationModalStatusPage').textContent = 'Sudah dibaca';
                         button.classList.remove('bg-purple-50', 'border-purple-200');
                         button.classList.add('bg-white', 'border-gray-200');
-                        const unreadCount = document.getElementById('notificationUnreadCount');
-                        const current = Number(unreadCount?.textContent || 0);
-                        const next = Math.max(current - 1, 0);
-                        if (unreadCount) unreadCount.textContent = next;
-                        document.getElementById('notificationModalStatus').textContent = 'Sudah dibaca';
+                        
+                        // Update badge di navbar
+                        const badge = document.getElementById('notificationBadge');
+                        if (badge) {
+                            let currentCount = parseInt(badge.textContent) || 0;
+                            if (currentCount > 0) {
+                                currentCount--;
+                                if (currentCount === 0) {
+                                    badge.remove();
+                                } else {
+                                    badge.textContent = currentCount;
+                                }
+                            }
+                        }
+                        
+                        // Update count di halaman
+                        const unreadCountEl = document.getElementById('notificationUnreadCount');
+                        if (unreadCountEl) {
+                            let current = parseInt(unreadCountEl.textContent) || 0;
+                            unreadCountEl.textContent = Math.max(current - 1, 0);
+                        }
                     }
-                });
+                })
+                .catch(() => {});
             }
-
-            document.getElementById('notificationDetailModal').classList.remove('hidden');
         }
 
-        function closeNotificationModal() {
-            document.getElementById('notificationDetailModal').classList.add('hidden');
+        function closeNotificationModalPage() {
+            const modal = document.getElementById('notificationDetailModalPage');
+            modal.classList.add('hidden');
+        }
+
+        function openNotificationUrlPage() {
+            const url = document.getElementById('notificationModalOpenButtonPage').dataset.url;
+            if (url && url !== '#') {
+                window.location.href = url;
+            }
         }
 
         function markAllNotificationsReadPage() {
@@ -171,6 +244,13 @@
                 }
             });
         }
+
+        // Close modal dengan ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeNotificationModalPage();
+            }
+        });
     </script>
 </body>
 </html>

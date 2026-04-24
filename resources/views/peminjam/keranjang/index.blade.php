@@ -81,7 +81,7 @@
                             Checkout (0)
                         </button>
                         <a href="{{ route('peminjam.beranda') }}" class="w-full px-4 py-2.5 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-colors text-center block">
-                            Lanjut Belanja
+                            Lanjut Memilih Buku
                         </a>
                     </div>
 
